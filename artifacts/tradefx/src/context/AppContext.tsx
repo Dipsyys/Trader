@@ -4,7 +4,7 @@ export type Theme = 'dark' | 'light';
 export type Language = 'id' | 'en';
 export type AccountType = 'real' | 'demo';
 export type Currency = 'usdt' | 'btc' | 'eth';
-export type Leverage = '1x' | '5x' | '10x' | '20x' | '50x';
+export type Leverage = string; // e.g. '10x', '75x', custom numeric
 
 interface AppContextValue {
   theme: Theme;

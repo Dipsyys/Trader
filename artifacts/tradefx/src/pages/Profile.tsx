@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Pencil,
@@ -180,13 +180,11 @@ function PreferensiPanel() {
             <SelectItem value="btc">BTC</SelectItem>
             <SelectItem value="eth">ETH</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.leverage')} value={leverage} onValueChange={v => setLeverage(v as any)}>
-            <SelectItem value="1x">1x</SelectItem>
-            <SelectItem value="5x">5x</SelectItem>
-            <SelectItem value="10x">10x</SelectItem>
-            <SelectItem value="20x">20x</SelectItem>
-            <SelectItem value="50x">50x</SelectItem>
-          </SelectRow>
+          {/* Custom Leverage Picker */}
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-foreground font-medium">{t('pref.leverage')}</span>
+            <LeveragePicker value={leverage} onChange={v => setLeverage(v)} />
+          </div>
           <SelectRow label={t('pref.priceDisplay')} value={priceDisplay} onValueChange={setPriceDisplay}>
             <SelectItem value="last">Last Price</SelectItem>
             <SelectItem value="mark">Mark Price</SelectItem>
@@ -226,6 +224,146 @@ function PreferensiPanel() {
         </div>
       </Card>
 
+    </div>
+  );
+}
+
+/* ── LeveragePicker ─────────────────────────────────── */
+const LEVERAGE_PRESETS = [1, 5, 10, 20, 50, 100, 125];
+const LEVERAGE_MAX = 125;
+
+function LeveragePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const current = parseInt(value) || 10;
+  const [inputVal, setInputVal] = useState(String(current));
+  const [inputFocused, setInputFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // keep input in sync when value changes from outside
+  useEffect(() => {
+    if (!inputFocused) setInputVal(String(current));
+  }, [current, inputFocused]);
+
+  function applyCustom() {
+    const n = parseInt(inputVal);
+    if (!n || n < 1) return;
+    const clamped = Math.min(n, LEVERAGE_MAX);
+    setInputVal(String(clamped));
+    onChange(`${clamped}x`);
+  }
+
+  function handleSlider(e: React.ChangeEvent<HTMLInputElement>) {
+    const n = Number(e.target.value);
+    setInputVal(String(n));
+    onChange(`${n}x`);
+  }
+
+  function handleKey(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') applyCustom();
+  }
+
+  const isHigh = current >= 50;
+  const isExtreme = current >= 100;
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Preset buttons */}
+      <div className="flex gap-2 flex-wrap">
+        {LEVERAGE_PRESETS.map(lv => {
+          const active = current === lv;
+          return (
+            <button
+              key={lv}
+              onClick={() => { onChange(`${lv}x`); setInputVal(String(lv)); }}
+              className={`px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${
+                active
+                  ? 'border-primary bg-primary/20 text-primary shadow-[0_0_8px_rgba(0,212,200,0.3)]'
+                  : 'border-border text-muted-foreground hover:border-primary/50 hover:text-foreground'
+              }`}
+            >
+              {lv}x
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Slider */}
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] text-muted-foreground w-5">1x</span>
+        <input
+          type="range"
+          min={1}
+          max={LEVERAGE_MAX}
+          step={1}
+          value={current}
+          onChange={handleSlider}
+          className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
+            [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary
+            [&::-webkit-slider-thumb]:shadow-[0_0_6px_rgba(0,212,200,0.5)]
+            [&::-webkit-slider-runnable-track]:rounded-full"
+          style={{
+            background: `linear-gradient(to right, hsl(var(--primary)) ${(current / LEVERAGE_MAX) * 100}%, hsl(var(--muted)) ${(current / LEVERAGE_MAX) * 100}%)`
+          }}
+        />
+        <span className="text-[10px] text-muted-foreground w-8 text-right">125x</span>
+      </div>
+
+      {/* Custom input */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <input
+            ref={inputRef}
+            type="number"
+            min={1}
+            max={LEVERAGE_MAX}
+            value={inputVal}
+            onChange={e => setInputVal(e.target.value)}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => { setInputFocused(false); applyCustom(); }}
+            onKeyDown={handleKey}
+            placeholder="Custom…"
+            className="w-full bg-background/50 border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors pr-8 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold pointer-events-none">x</span>
+        </div>
+        <button
+          onClick={applyCustom}
+          className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/50 text-primary text-xs font-bold hover:bg-primary/20 transition-colors whitespace-nowrap"
+        >
+          Apply
+        </button>
+      </div>
+
+      {/* Risk warning */}
+      {isHigh && (
+        <div className={`flex items-start gap-2 rounded-lg px-3 py-2 text-xs ${
+          isExtreme
+            ? 'bg-red-500/10 border border-red-500/30 text-red-400'
+            : 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-400'
+        }`}>
+          <span className="text-base leading-none mt-px">{isExtreme ? '🔴' : '⚠️'}</span>
+          <span>
+            {isExtreme
+              ? `Leverage ${current}x sangat ekstrem. Risiko likuidasi sangat tinggi.`
+              : `Leverage ${current}x termasuk tinggi. Gunakan dengan manajemen risiko ketat.`}
+          </span>
+        </div>
+      )}
+
+      {/* Current value badge */}
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-muted-foreground">Leverage aktif:</span>
+        <span className={`text-xs font-black px-2 py-0.5 rounded-full border ${
+          isExtreme
+            ? 'border-red-500/50 text-red-400 bg-red-500/10'
+            : isHigh
+            ? 'border-yellow-500/50 text-yellow-400 bg-yellow-500/10'
+            : 'border-primary/50 text-primary bg-primary/10'
+        }`}>
+          {current}x
+        </span>
+      </div>
     </div>
   );
 }
