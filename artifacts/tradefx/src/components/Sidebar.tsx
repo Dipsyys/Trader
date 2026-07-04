@@ -114,21 +114,6 @@ export default function Sidebar() {
       {/* Bottom Area */}
       <div className="flex flex-col gap-3 p-3 flex-shrink-0">
 
-        {/* PRO PLAN card — hidden when collapsed */}
-        {!collapsed && (
-          <div className="bg-card border border-border p-3 rounded-lg flex flex-col gap-2">
-            <span className="text-primary text-xs font-bold tracking-wide">{t('plan.pro')}</span>
-            <span className="text-muted-foreground text-[10px]">{t('plan.expires')}</span>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full mt-1 border-primary text-primary hover:bg-primary/10 h-7 text-xs"
-            >
-              {t('plan.upgrade')}
-            </Button>
-          </div>
-        )}
-
         {/* User mini-profile */}
         <div
           className={`flex items-center bg-muted/50 rounded-lg cursor-pointer hover:bg-muted/80 transition-colors overflow-hidden ${
