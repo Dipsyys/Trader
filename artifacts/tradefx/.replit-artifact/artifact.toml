@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "TradeFX"
+version = "1.0.0"
+id = "artifacts/tradefx"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18438
+
+[services.development]
+run = "pnpm --filter @workspace/tradefx run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tradefx", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/tradefx/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18438"
+BASE_PATH = "/"
