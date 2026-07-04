@@ -161,23 +161,23 @@ function PasswordField({
 
 /* ── Preferensi ─────────────────────────────────────── */
 function PreferensiPanel() {
-  const { t, theme, toggleTheme } = useApp();
+  const { t, theme, toggleTheme, accountType, setAccountType, currency, setCurrency, leverage, setLeverage } = useApp();
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Preferensi Trading */}
       <Card>
         <SectionTitle>{t('pref.trading.title')}</SectionTitle>
         <div className="flex flex-col gap-4">
-          <SelectRow label={t('pref.accountType')} defaultValue="real">
+          <SelectRow label={t('pref.accountType')} value={accountType} onValueChange={v => setAccountType(v as any)}>
             <SelectItem value="real">Real Account</SelectItem>
             <SelectItem value="demo">Demo Account</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.currency')} defaultValue="usdt">
+          <SelectRow label={t('pref.currency')} value={currency} onValueChange={v => setCurrency(v as any)}>
             <SelectItem value="usdt">USDT</SelectItem>
             <SelectItem value="btc">BTC</SelectItem>
             <SelectItem value="eth">ETH</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.leverage')} defaultValue="10x">
+          <SelectRow label={t('pref.leverage')} value={leverage} onValueChange={v => setLeverage(v as any)}>
             <SelectItem value="1x">1x</SelectItem>
             <SelectItem value="5x">5x</SelectItem>
             <SelectItem value="10x">10x</SelectItem>
@@ -227,11 +227,11 @@ function PreferensiPanel() {
   );
 }
 
-function SelectRow({ label, defaultValue, children }: { label: string; defaultValue: string; children: React.ReactNode }) {
+function SelectRow({ label, value, onValueChange, children }: { label: string; value: string; onValueChange: (v: string) => void; children: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4">
       <span className="text-sm text-foreground font-medium min-w-[140px]">{label}</span>
-      <Select defaultValue={defaultValue}>
+      <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger className="flex-1 bg-background/50 border-border text-foreground text-sm h-9">
           <SelectValue />
         </SelectTrigger>
@@ -424,7 +424,10 @@ const TAB_TRANS: Record<TabKey, string> = {
 };
 
 export default function Profile() {
-  const { t } = useApp();
+  const { t, accountType, currency, leverage, tradingNotifications, setTradingNotifications } = useApp();
+
+  const accountTypeLabel: Record<string, string> = { real: 'Real Account', demo: 'Demo Account' };
+  const currencyLabel: Record<string, string> = { usdt: 'USDT', btc: 'BTC', eth: 'ETH' };
   const [activeTab, setActiveTab] = useState<TabKey>('data-diri');
 
   return (
@@ -600,10 +603,10 @@ export default function Profile() {
                     {t('tradingPref.title')}
                   </h3>
                   <div className="flex flex-col gap-3">
-                    <PreferenceRow label={t('tradingPref.accountType')} value="Real Account" />
-                    <PreferenceRow label={t('tradingPref.leverage')} value="10x" />
-                    <PreferenceRow label={t('tradingPref.currency')} value="USDT" />
-                    <PreferenceRow label={t('tradingPref.notifications')} value={t('common.active')} hasToggle defaultToggle />
+                    <PreferenceRow label={t('tradingPref.accountType')} value={accountTypeLabel[accountType]} />
+                    <PreferenceRow label={t('tradingPref.leverage')} value={leverage} />
+                    <PreferenceRow label={t('tradingPref.currency')} value={currencyLabel[currency]} />
+                    <PreferenceRow label={t('tradingPref.notifications')} value={tradingNotifications ? t('common.active') : 'Off'} hasToggle isOn={tradingNotifications} onToggle={setTradingNotifications} />
                   </div>
                 </div>
               </div>
@@ -693,10 +696,9 @@ function SocialLink({ icon: Icon, platform, handle, href }: { icon: any; platfor
   );
 }
 
-function PreferenceRow({ label, value, hasToggle = false, defaultToggle = false }: {
-  label: string; value: string; hasToggle?: boolean; defaultToggle?: boolean;
+function PreferenceRow({ label, value, hasToggle = false, isOn = false, onToggle }: {
+  label: string; value: string; hasToggle?: boolean; isOn?: boolean; onToggle?: (v: boolean) => void;
 }) {
-  const [isOn, setIsOn] = useState(defaultToggle);
   return (
     <div className="flex items-center justify-between p-3 rounded-lg bg-background/50 border border-border/30 relative pl-4">
       <div className="absolute left-0 top-2 bottom-2 w-0.5 bg-primary/50 rounded-r" />
@@ -706,7 +708,7 @@ function PreferenceRow({ label, value, hasToggle = false, defaultToggle = false 
         {hasToggle && (
           <Switch
             checked={isOn}
-            onCheckedChange={setIsOn}
+            onCheckedChange={onToggle}
             className="data-[state=checked]:bg-primary scale-75"
           />
         )}

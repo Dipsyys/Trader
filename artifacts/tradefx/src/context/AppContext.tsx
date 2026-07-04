@@ -2,6 +2,9 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export type Theme = 'dark' | 'light';
 export type Language = 'id' | 'en';
+export type AccountType = 'real' | 'demo';
+export type Currency = 'usdt' | 'btc' | 'eth';
+export type Leverage = '1x' | '5x' | '10x' | '20x' | '50x';
 
 interface AppContextValue {
   theme: Theme;
@@ -11,6 +14,15 @@ interface AppContextValue {
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
   t: (key: string) => string;
+  // Trading preferences
+  accountType: AccountType;
+  setAccountType: (v: AccountType) => void;
+  currency: Currency;
+  setCurrency: (v: Currency) => void;
+  leverage: Leverage;
+  setLeverage: (v: Leverage) => void;
+  tradingNotifications: boolean;
+  setTradingNotifications: (v: boolean) => void;
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -313,6 +325,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
   const [language, setLanguage] = useState<Language>('id');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [accountType, setAccountType] = useState<AccountType>('real');
+  const [currency, setCurrency] = useState<Currency>('usdt');
+  const [leverage, setLeverage] = useState<Leverage>('10x');
+  const [tradingNotifications, setTradingNotifications] = useState(true);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -330,7 +346,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const t = (key: string): string => translations[language][key] ?? key;
 
   return (
-    <AppContext.Provider value={{ theme, toggleTheme, language, toggleLanguage, sidebarCollapsed, toggleSidebar, t }}>
+    <AppContext.Provider value={{
+      theme, toggleTheme,
+      language, toggleLanguage,
+      sidebarCollapsed, toggleSidebar,
+      t,
+      accountType, setAccountType,
+      currency, setCurrency,
+      leverage, setLeverage,
+      tradingNotifications, setTradingNotifications,
+    }}>
       {children}
     </AppContext.Provider>
   );
