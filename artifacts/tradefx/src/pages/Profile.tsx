@@ -162,6 +162,9 @@ function PasswordField({
 /* ── Preferensi ─────────────────────────────────────── */
 function PreferensiPanel() {
   const { t, theme, toggleTheme, accountType, setAccountType, currency, setCurrency, leverage, setLeverage } = useApp();
+  const [priceDisplay, setPriceDisplay] = useState('last');
+  const [chartSize, setChartSize] = useState('medium');
+  const [barCount, setBarCount] = useState('200');
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Preferensi Trading */}
@@ -184,17 +187,17 @@ function PreferensiPanel() {
             <SelectItem value="20x">20x</SelectItem>
             <SelectItem value="50x">50x</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.priceDisplay')} defaultValue="last">
+          <SelectRow label={t('pref.priceDisplay')} value={priceDisplay} onValueChange={setPriceDisplay}>
             <SelectItem value="last">Last Price</SelectItem>
             <SelectItem value="mark">Mark Price</SelectItem>
             <SelectItem value="index">Index Price</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.chartSize')} defaultValue="medium">
+          <SelectRow label={t('pref.chartSize')} value={chartSize} onValueChange={setChartSize}>
             <SelectItem value="small">Small</SelectItem>
             <SelectItem value="medium">Medium</SelectItem>
             <SelectItem value="large">Large</SelectItem>
           </SelectRow>
-          <SelectRow label={t('pref.barCount')} defaultValue="200">
+          <SelectRow label={t('pref.barCount')} value={barCount} onValueChange={setBarCount}>
             <SelectItem value="100">100</SelectItem>
             <SelectItem value="200">200</SelectItem>
             <SelectItem value="500">500</SelectItem>

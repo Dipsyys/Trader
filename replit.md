@@ -4,7 +4,7 @@ A trading platform web application for traders to manage their portfolio, track 
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/tradefx run dev` — run the frontend (port 18438, served at `/`)
+- `pnpm --filter @workspace/tradefx run dev` — run the frontend (port 5173, served at `/`)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080, served at `/api`)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
