@@ -1,19 +1,22 @@
 import { Bell, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useApp } from '@/context/AppContext';
 
 export default function Header() {
+  const { t } = useApp();
+
   return (
     <header className="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-border bg-card/50 backdrop-blur-sm z-10 sticky top-0">
-      
+
       {/* Breadcrumb / Title Area */}
       <div className="flex flex-col justify-center max-w-[30%]">
         <div className="flex items-center gap-2 text-sm font-medium">
-          <span className="text-foreground">Profile</span>
+          <span className="text-foreground">{t('header.profile')}</span>
           <span className="text-muted-foreground">/</span>
-          <span className="text-foreground">Data Diri</span>
+          <span className="text-foreground">{t('header.dataDiri')}</span>
         </div>
         <p className="text-xs text-muted-foreground truncate mt-0.5">
-          Kelola informasi pribadi dan pengaturan akun Anda.
+          {t('header.subtitle')}
         </p>
       </div>
 
@@ -43,7 +46,7 @@ export default function Header() {
           <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-foreground ml-1" />
         </div>
       </div>
-      
+
     </header>
   );
 }

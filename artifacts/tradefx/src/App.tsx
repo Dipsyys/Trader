@@ -6,7 +6,7 @@ import { Route, Switch, Router as WouterRouter } from 'wouter';
 import Profile from './pages/Profile';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import { useEffect } from 'react';
+import { AppProvider } from './context/AppContext';
 
 const queryClient = new QueryClient();
 
@@ -20,27 +20,25 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <div className="flex h-screen w-full overflow-hidden bg-background text-foreground selection:bg-primary/30">
-          <Sidebar />
-          <div className="flex flex-col flex-1 min-w-0">
-            <Header />
-            <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-8 custom-scrollbar">
-              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-                <Router />
-              </WouterRouter>
-            </main>
+    <AppProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="flex h-screen w-full overflow-hidden bg-background text-foreground selection:bg-primary/30">
+            <Sidebar />
+            <div className="flex flex-col flex-1 min-w-0">
+              <Header />
+              <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-8 custom-scrollbar">
+                <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+                  <Router />
+                </WouterRouter>
+              </main>
+            </div>
           </div>
-        </div>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </AppProvider>
   );
 }
 
