@@ -21,14 +21,6 @@ export default function Header() {
         </p>
       </div>
 
-      {/* Tickers */}
-      <div className="hidden lg:flex items-center gap-6 overflow-hidden max-w-[40%] text-sm px-4">
-        <Ticker pair="BTC/USDT" value="+1.36%" />
-        <Ticker pair="ETH/USDT" value="+2.23%" />
-        <Ticker pair="SOL/USDT" value="+4.21%" />
-        <Ticker pair="XAU/USD" value="+0.82%" />
-      </div>
-
       {/* Right Actions */}
       <div className="flex items-center gap-4 flex-shrink-0">
         <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground rounded-full w-9 h-9">

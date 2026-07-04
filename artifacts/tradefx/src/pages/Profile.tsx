@@ -524,6 +524,20 @@ export default function Profile() {
                   </div>
                 </div>
 
+                {/* Tentang Saya */}
+                <div className="bg-card border border-border rounded-xl p-6 relative">
+                  <div className="absolute left-0 top-6 bottom-6 w-1 bg-primary rounded-r" />
+                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2 pl-3">
+                    {t('about.title')}
+                  </h3>
+                  <div className="pl-3 relative">
+                    <Quote className="w-8 h-8 text-muted/30 absolute -top-2 -left-2 rotate-180" />
+                    <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
+                      {t('about.quote')}
+                    </p>
+                  </div>
+                </div>
+
                 {/* Media Sosial */}
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
@@ -549,19 +563,6 @@ export default function Profile() {
                   </div>
                 </div>
 
-                {/* Tentang Saya */}
-                <div className="bg-card border border-border rounded-xl p-6 relative">
-                  <div className="absolute left-0 top-6 bottom-6 w-1 bg-primary rounded-r" />
-                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2 pl-3">
-                    {t('about.title')}
-                  </h3>
-                  <div className="pl-3 relative">
-                    <Quote className="w-8 h-8 text-muted/30 absolute -top-2 -left-2 rotate-180" />
-                    <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
-                      {t('about.quote')}
-                    </p>
-                  </div>
-                </div>
               </div>
 
               {/* RIGHT COLUMN */}
