@@ -16,10 +16,7 @@ import {
   Eye,
   EyeOff,
   Shield,
-  Smartphone,
   MessageSquare,
-  MapPin,
-  ChevronRight,
   Moon,
   Sun,
   Bell,
@@ -130,29 +127,6 @@ function KeamananPanel() {
         </div>
       </Card>
 
-      {/* 2FA */}
-      <Card>
-        <SectionTitle>{t('security.2fa.title')}</SectionTitle>
-        <p className="text-xs text-muted-foreground mb-4">{t('security.2fa.desc')}</p>
-        <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-          <TwoFARow icon={Smartphone} label="Google Authenticator" activeLabel={t('common.active')} active />
-          <TwoFARow icon={MessageSquare} label="SMS Authentication" activeLabel={t('common.active')} active />
-          <TwoFARow icon={Mail} label="Email Authentication" activeLabel={t('common.active')} active />
-        </div>
-      </Card>
-
-      {/* Login Activity */}
-      <Card>
-        <SectionTitle>{t('security.loginActivity')}</SectionTitle>
-        <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-          <LoginRow location="Jakarta, Indonesia" device="Windows · Chrome" time={t('security.currentlyActive')} isActive />
-          <LoginRow location="Surabaya, Indonesia" device="iOS · Safari" time={t('security.hoursAgo')} />
-          <LoginRow location="Bandung, Indonesia" device="Android · Chrome" time={t('security.dayAgo')} />
-        </div>
-        <button className="mt-4 flex items-center gap-2 text-primary text-xs font-semibold hover:underline">
-          {t('security.viewAll')} <ChevronRight className="w-3.5 h-3.5" />
-        </button>
-      </Card>
     </div>
   );
 }
@@ -182,38 +156,6 @@ function PasswordField({
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
       </div>
-    </div>
-  );
-}
-
-function TwoFARow({ icon: Icon, label, active, activeLabel }: { icon: any; label: string; active?: boolean; activeLabel: string }) {
-  return (
-    <div className="flex items-center justify-between p-3.5 hover:bg-muted/30 transition-colors">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-          <Icon className="w-4 h-4 text-muted-foreground" />
-        </div>
-        <span className="text-sm font-medium text-foreground">{label}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        {active && <span className="text-xs font-bold text-primary">{activeLabel}</span>}
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </div>
-    </div>
-  );
-}
-
-function LoginRow({ location, device, time, isActive }: { location: string; device: string; time: string; isActive?: boolean }) {
-  return (
-    <div className="flex items-center justify-between p-3.5 hover:bg-muted/30 transition-colors">
-      <div className="flex items-center gap-3">
-        <MapPin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-        <div className="flex flex-col gap-0.5">
-          <span className="text-sm font-semibold text-foreground">{location}</span>
-          <span className="text-[11px] text-muted-foreground">{device}</span>
-        </div>
-      </div>
-      <span className={`text-xs font-semibold ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>{time}</span>
     </div>
   );
 }
