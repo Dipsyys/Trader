@@ -59,7 +59,6 @@ _Populate as you build — explicit user instructions worth remembering across s
 ## Gotchas
 
 - After any OpenAPI spec change, re-run codegen before using updated types: `pnpm --filter @workspace/api-spec run codegen`
-- CSS theme tokens in `src/index.css` currently use placeholder `red` values — fill in real HSL values before production use
 - `DATABASE_URL` is runtime-managed by Replit; do not set it manually as a secret
 
 ## Pointers
