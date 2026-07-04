@@ -1,6 +1,7 @@
 import { Bell, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
+import profilePhoto from '@assets/Regal_portrait_with_ornate_uniform_1783165328394.png';
 
 export default function Header() {
   const { t } = useApp();
@@ -36,8 +37,8 @@ export default function Header() {
         </Button>
 
         <div className="flex items-center gap-3 pl-4 border-l border-border cursor-pointer group">
-          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0 text-xs font-medium border border-border group-hover:border-primary/50 transition-colors">
-            D
+          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 text-xs font-medium border border-border group-hover:border-primary/50 transition-colors">
+            <img src={profilePhoto} alt="DipsxBT" className="w-full h-full object-cover" />
           </div>
           <div className="hidden sm:flex flex-col">
             <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">DipsxBT</span>

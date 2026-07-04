@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
 import { useLocation } from 'wouter';
+import profilePhoto from '@assets/Regal_portrait_with_ornate_uniform_1783165328394.png';
 
 export default function Sidebar() {
   const { theme, toggleTheme, language, toggleLanguage, sidebarCollapsed, toggleSidebar, t } = useApp();
@@ -104,8 +105,8 @@ export default function Sidebar() {
             collapsed ? 'justify-center p-1.5' : 'gap-3 p-2'
           }`}
         >
-          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0 text-xs font-medium border border-border">
-            D
+          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 text-xs font-medium border border-border">
+            <img src={profilePhoto} alt="DipsxBT" className="w-full h-full object-cover" />
           </div>
           {!collapsed && (
             <div className="flex flex-col flex-1 min-w-0">

@@ -43,6 +43,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useApp } from '@/context/AppContext';
+import profilePhoto from '@assets/Regal_portrait_with_ornate_uniform_1783165328394.png';
 
 /* ─────────────────────────────────────── helpers ─── */
 
@@ -642,8 +643,8 @@ export default function Profile() {
                   <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/10 to-transparent" />
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 relative z-10">
                     <div className="relative group">
-                      <div className="w-24 h-24 rounded-full bg-background border-[3px] border-primary/80 shadow-[0_0_15px_rgba(0,212,200,0.3)] flex items-center justify-center text-4xl font-bold text-foreground">
-                        D
+                      <div className="w-24 h-24 rounded-full bg-background border-[3px] border-primary/80 shadow-[0_0_15px_rgba(0,212,200,0.3)] overflow-hidden flex items-center justify-center text-4xl font-bold text-foreground">
+                        <img src={profilePhoto} alt="DipsxBT" className="w-full h-full object-cover" />
                       </div>
                       <button aria-label="Edit avatar" className="absolute bottom-0 right-0 w-8 h-8 bg-card border border-border rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors">
                         <Pencil className="w-3.5 h-3.5" />
