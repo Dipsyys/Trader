@@ -52,15 +52,15 @@ export default function Sidebar() {
           icon={LayoutDashboard}
           label={t('nav.dashboard')}
           collapsed={collapsed}
-          isActive={location === '/dashboard'}
+          isActive={location === '/dashboard' || location === '/'}
           onClick={() => setLocation('/dashboard')}
         />
         <NavItem
           icon={Briefcase}
           label={t('nav.portfolio')}
           collapsed={collapsed}
-          isActive={location === '/' || location === ''}
-          onClick={() => setLocation('/')}
+          isActive={location === '/profile'}
+          onClick={() => setLocation('/profile')}
         />
         <NavItem
           icon={TrendingUp}
