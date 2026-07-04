@@ -106,7 +106,7 @@ export default function Sidebar() {
         </div>
 
         {/* Utility toggles */}
-        <div className={`flex items-center gap-1 ${collapsed ? 'flex-col' : 'justify-between px-0.5'}`}>
+        <div className={`flex items-center gap-1 ${collapsed ? 'flex-col' : 'justify-center px-0.5'}`}>
           {/* Sidebar toggle (desktop/mobile) */}
           <Button
             variant="ghost"
