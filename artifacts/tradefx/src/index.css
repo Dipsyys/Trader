@@ -191,13 +191,89 @@
 .trade-card {
   border: 1px solid rgba(0, 217, 255, 0.12);
   border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 217, 255, 0.04);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 217, 255, 0.05);
   transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  will-change: transform;
 }
 .trade-card:hover {
-  border-color: rgba(0, 217, 255, 0.40);
-  box-shadow: 0 0 24px rgba(0, 217, 255, 0.18), 0 8px 25px rgba(0, 0, 0, 0.45);
-  transform: scale(1.005);
+  border-color: rgba(0, 217, 255, 0.45);
+  box-shadow: 0 0 24px rgba(0, 217, 255, 0.16), 0 12px 30px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* AI Insight highlight card */
+.ai-card {
+  background: linear-gradient(135deg, #0B1523 0%, #0D1E30 60%, #071520 100%) !important;
+  border: 1px solid rgba(0, 217, 255, 0.28) !important;
+  box-shadow: 0 0 28px rgba(0, 217, 255, 0.10), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+.ai-card:hover {
+  border-color: rgba(0, 217, 255, 0.55) !important;
+  box-shadow: 0 0 36px rgba(0, 217, 255, 0.18), 0 12px 30px rgba(0, 0, 0, 0.55) !important;
+  transform: translateY(-2px);
+}
+
+/* Gradient cyan button */
+.btn-cyan {
+  background: linear-gradient(90deg, #00B8FF, #00F0FF);
+  color: #050B14;
+  font-weight: 700;
+  font-size: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  padding: 6px 0;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+}
+.btn-cyan:hover {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.50);
+  transform: translateY(-1px);
+}
+
+/* Gradient progress bar */
+.progress-track {
+  background: #132233;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00B8FF, #00F5FF);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.55);
+  transition: width 0.6s ease;
+}
+
+/* Calendar cell */
+.cal-cell {
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  cursor: default;
+}
+.cal-cell:hover {
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.30);
+  transform: scale(1.08);
+  z-index: 1;
+  position: relative;
+}
+
+/* Table row */
+.tbl-row {
+  transition: background 0.2s ease;
+}
+.tbl-row:hover {
+  background: rgba(0, 217, 255, 0.05) !important;
+}
+
+/* Header glassmorphism */
+.header-glass {
+  background: rgba(7, 17, 28, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(0, 217, 255, 0.12);
 }
 
 .nav-active {
@@ -215,7 +291,6 @@
 }
 .nav-item:not(.nav-active):hover {
   background: rgba(0, 217, 255, 0.05);
-  border-color: rgba(0, 217, 255, 0.15);
 }
 
 @layer utilities {

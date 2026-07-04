@@ -7,7 +7,7 @@ export default function Header() {
   const { t } = useApp();
 
   return (
-    <header className="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-border bg-card/50 backdrop-blur-sm z-10 sticky top-0">
+    <header className="header-glass h-16 flex-shrink-0 flex items-center justify-between px-6 z-10 sticky top-0">
 
       {/* Breadcrumb / Title Area */}
       <div className="flex flex-col justify-center max-w-[30%]">

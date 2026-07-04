@@ -329,7 +329,7 @@ function PerformanceCalendar() {
             return (
               <div
                 key={di}
-                className={`rounded text-center py-1 px-0.5 ${val !== undefined ? cellColor(val) : 'text-muted-foreground'}`}
+                className={`cal-cell text-center py-1.5 px-0.5 ${val !== undefined ? cellColor(val) : 'text-muted-foreground'}`}
               >
                 <div className="text-[9px] font-bold">{day}</div>
                 {val !== undefined && (
@@ -411,15 +411,15 @@ function RecentTrades() {
       <div className="overflow-x-auto">
         <table className="w-full text-[11px]">
           <thead>
-            <tr>
+            <tr style={{ background: 'rgba(5,11,20,0.6)' }}>
               {cols.map(c => (
-                <th key={c} className="text-left text-[9px] font-bold text-muted-foreground uppercase pb-2 pr-3 whitespace-nowrap">{c}</th>
+                <th key={c} className="text-left text-[9px] font-semibold text-muted-foreground uppercase pb-2 pt-1 pr-3 whitespace-nowrap tracking-wider">{c}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {recentTrades.map((t, i) => (
-              <tr key={i} className="border-t border-border/30 hover:bg-muted/10 transition-colors">
+              <tr key={i} className="tbl-row border-t" style={{ borderColor: 'rgba(0,217,255,0.06)' }}>
                 <td className="py-2 pr-3 font-bold text-foreground whitespace-nowrap">
                   <div className="flex items-center gap-1.5">
                     <span className="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center text-[8px] font-black text-orange-400">₿</span>
@@ -434,8 +434,8 @@ function RecentTrades() {
                 <td className="py-2 pr-3 text-muted-foreground">{t.size}</td>
                 <td className="py-2 pr-3 text-foreground">{t.entry}</td>
                 <td className="py-2 pr-3 text-foreground">{t.exit}</td>
-                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pnl}</td>
-                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pct}</td>
+                <td className={`py-2 pr-3 font-semibold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pnl}</td>
+                <td className={`py-2 pr-3 font-semibold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pct}</td>
                 <td className="py-2 text-muted-foreground whitespace-nowrap">{t.date}</td>
               </tr>
             ))}
@@ -457,8 +457,8 @@ function RiskMetrics() {
           <span className="text-xs text-muted-foreground"> / 100</span>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={130}>
-        <RadarChart data={radarData} outerRadius={48} margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+      <ResponsiveContainer width="100%" height={162}>
+        <RadarChart data={radarData} outerRadius={60} margin={{ top: 4, right: 14, left: 14, bottom: 4 }}>
           <PolarGrid stroke="rgba(255,255,255,0.06)" />
           <PolarAngleAxis dataKey="subject" tick={{ fontSize: 8, fill: '#92A6B9' }} />
           <Radar dataKey="A" stroke={PRIMARY} fill={PRIMARY} fillOpacity={0.18} strokeWidth={2} />
@@ -481,36 +481,33 @@ function AIInsightFunding() {
   return (
     <div className="flex flex-col gap-3 w-56 flex-shrink-0">
       {/* AI Insight */}
-      <SectionCard className="flex-1">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">AI Insight</span>
-          <span className="px-1.5 py-0.5 rounded text-[8px] font-bold bg-primary/20 text-primary border border-primary/30">New</span>
-          <ArrowUpRight className="w-3 h-3 text-muted-foreground ml-auto" />
-        </div>
-        <div className="flex items-start gap-2">
-          <div className="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center">
+      <SectionCard className="flex-1 ai-card">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(0,217,255,0.15)', border: '1px solid rgba(0,217,255,0.35)' }}>
             <Zap className="w-3.5 h-3.5 text-primary" />
           </div>
-          <p className="text-[10px] text-muted-foreground leading-relaxed">
-            Your win rate has improved <span className="text-primary font-bold">5.32%</span> this month.
-            Consider increasing position size in{' '}
-            <span className="text-foreground font-semibold">Trend Following</span> strategy which shows the highest consistency.
-          </p>
+          <span className="text-[10px] font-bold text-foreground uppercase tracking-widest">AI Insight</span>
+          <span className="px-1.5 py-0.5 rounded-md text-[8px] font-bold ml-auto" style={{ background: 'rgba(0,217,255,0.15)', color: '#00D9FF', border: '1px solid rgba(0,217,255,0.30)' }}>New</span>
         </div>
-        <button className="mt-3 w-full text-[10px] text-primary font-bold border border-primary/30 rounded-lg py-1.5 hover:bg-primary/10 transition-colors">
-          View Full Insight
-        </button>
+        <p className="text-[10px] text-muted-foreground leading-relaxed mb-3">
+          Win rate naik <span className="font-bold" style={{ color: '#00D9FF' }}>5.32%</span> bulan ini.
+          Pertimbangkan menambah ukuran posisi di{' '}
+          <span className="text-foreground font-semibold">Trend Following</span> — konsistensi tertinggi.
+        </p>
+        <button className="btn-cyan">View Full Insight</button>
       </SectionCard>
 
       {/* Funding Progress */}
       <SectionCard>
         <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Funding Progress</span>
-        <div className="mt-2 flex items-center justify-between mb-1">
+        <div className="mt-2 flex items-center justify-between">
           <span className="text-[10px] text-muted-foreground">Target: $10,000</span>
           <span className="text-[10px] font-bold text-primary">72%</span>
         </div>
-        <Progress value={72} className="h-2 bg-muted" />
-        <div className="mt-2 flex items-center justify-between">
+        <div className="progress-track">
+          <div className="progress-fill" style={{ width: '72%' }} />
+        </div>
+        <div className="flex items-center justify-between mt-1">
           <span className="text-[10px] text-muted-foreground">Raised so far:</span>
           <span className="text-xs font-black text-foreground">$7,200</span>
         </div>

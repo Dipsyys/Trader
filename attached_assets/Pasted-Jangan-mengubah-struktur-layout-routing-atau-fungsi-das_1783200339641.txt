@@ -1,0 +1,335 @@
+Jangan mengubah struktur, layout, routing, atau fungsi dashboard yang sudah ada. Fokus hanya pada peningkatan visual/UI agar tampil seperti dashboard trading premium modern (Bybit Institutional, TradingView Premium, Linear, Raycast, dan aplikasi fintech profesional).
+
+Target desain:
+- Cyber Dark
+- Neon Cyan Accent
+- Premium
+- Clean
+- Futuristic
+- Minimalist
+- Professional
+
+=========================================
+YANG HARUS DIPERBAIKI
+=========================================
+
+1. CARD
+Semua card masih terlihat terlalu flat.
+
+Gunakan style berikut:
+
+- Background #0B1523
+- Border 1px rgba(0,217,255,0.12)
+- Border Radius 18px
+- Shadow:
+  0 8px 24px rgba(0,0,0,.45)
+  0 0 18px rgba(0,217,255,.04)
+
+Hover Card:
+
+- translateY(-2px)
+- border menjadi #00D9FF
+- glow cyan halus
+- shadow lebih besar
+- transition 0.25s ease
+
+Semua card harus terasa memiliki depth.
+
+=========================================
+
+2. HEADER
+
+Header masih terlalu kosong.
+
+Buat lebih premium:
+
+- Background rgba(7,17,28,.75)
+- backdrop-filter blur(18px)
+- border bawah cyan transparan
+- sedikit glass effect
+
+=========================================
+
+3. CHART
+
+Semua chart harus menggunakan identitas warna cyan.
+
+Equity Curve:
+- Line #00D9FF
+- Area Fill rgba(0,217,255,.15)
+
+PnL Overview:
+- Rounded Bar
+- Glow cyan tipis
+- Grid opacity sangat rendah
+- Tooltip background #102030
+- Border tooltip #00D9FF
+
+Hover chart harus smooth.
+
+=========================================
+
+4. DONUT CHART
+
+Gunakan warna yang lebih elegan.
+
+BTC
+#00D9FF
+
+ETH
+#2563EB
+
+SOL
+#8B5CF6
+
+BNB
+#F59E0B
+
+Others
+#64748B
+
+Jangan menggunakan warna yang terlalu ramai.
+
+=========================================
+
+5. PERFORMANCE CALENDAR
+
+Perbaiki tampilan calendar.
+
+- Radius cell 10px
+- Hover glow cyan
+- Profit lebih hijau
+- Loss lebih merah
+- Spacing lebih lega
+- Header calendar lebih bersih
+
+=========================================
+
+6. TABLE
+
+Table masih terlihat seperti HTML biasa.
+
+Perbaiki:
+
+- Header lebih gelap
+- Hover row background rgba(0,217,255,.05)
+- Rounded row
+- Border sangat tipis
+- Profit font-weight 600
+- Loss font-weight 600
+- Hover lebih smooth
+
+=========================================
+
+7. AI INSIGHT CARD
+
+Buat terlihat menjadi highlight card.
+
+Tambahkan:
+
+- Background gradient gelap
+- Glow cyan
+- Icon AI besar
+- Border cyan
+- Button gradient cyan
+- Shadow premium
+
+=========================================
+
+8. RISK METRICS
+
+Radar chart terlalu kecil.
+
+Perbesar sekitar 25%.
+
+Tambahkan:
+
+- Glow cyan
+- Grid lebih halus
+- Label lebih jelas
+
+=========================================
+
+9. FUNDING PROGRESS
+
+Progress bar dibuat lebih modern.
+
+Background:
+
+#132233
+
+Fill:
+
+Linear Gradient
+
+#00B8FF
+ke
+#00F5FF
+
+Tambahkan glow cyan.
+
+=========================================
+
+10. ICON
+
+Gunakan icon outline modern seperti Lucide.
+
+Ukuran 18-20px.
+
+Semua icon aktif menggunakan warna:
+
+#00D9FF
+
+=========================================
+
+11. TYPOGRAPHY
+
+Gunakan font Inter.
+
+Heading:
+700
+
+Subheading:
+600
+
+Body:
+500
+
+Secondary:
+400
+
+Text utama:
+#F4F7FA
+
+Secondary:
+#92A6B9
+
+=========================================
+
+12. BORDER
+
+Semua border menggunakan
+
+rgba(0,217,255,.12)
+
+Hover
+
+#00D9FF
+
+=========================================
+
+13. BUTTON
+
+Primary Button
+
+Linear Gradient
+
+#00B8FF
+→
+#00F0FF
+
+Hover
+
+Glow cyan
+
+Transition 0.25s
+
+=========================================
+
+14. ANIMATION
+
+Semua interaksi harus smooth.
+
+Card Hover
+translateY(-2px)
+
+Button Hover
+Glow cyan
+
+Sidebar Hover
+Slide + Glow
+
+Chart Hover
+Smooth animation
+
+Transition
+0.25s ease
+
+=========================================
+
+15. SHADOW
+
+Gunakan shadow premium.
+
+Card:
+
+0 8px 24px rgba(0,0,0,.45)
+
+Glow:
+
+0 0 18px rgba(0,217,255,.05)
+
+Hover:
+
+0 0 24px rgba(0,217,255,.16)
+
+=========================================
+
+16. COLOR SYSTEM
+
+Background
+#050B14
+
+Sidebar
+#08111C
+
+Header
+#07111C
+
+Card
+#0B1523
+
+Primary
+#00D9FF
+
+Primary Hover
+#3BE8FF
+
+Success
+#00E676
+
+Danger
+#FF5A7A
+
+Warning
+#FFB84D
+
+Text
+#F4F7FA
+
+Secondary
+#92A6B9
+
+=========================================
+
+HASIL AKHIR YANG DIINGINKAN
+
+Jangan mengubah layout atau struktur dashboard yang sudah ada.
+
+Pertahankan semua komponen, namun tingkatkan kualitas visual agar terlihat seperti aplikasi trading premium kelas enterprise.
+
+Fokus pada:
+- visual hierarchy
+- spacing
+- shadow
+- glow cyan
+- border
+- chart
+- typography
+- icon
+- animation
+- hover effect
+- depth
+- consistency
+
+Dashboard harus terlihat elegan, profesional, modern, futuristik, dan nyaman digunakan dalam waktu lama, dengan nuansa seperti Bybit Institutional, TradingView Premium, Linear, dan dashboard fintech premium.
