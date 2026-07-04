@@ -163,11 +163,6 @@ function PasswordField({
 /* ── Preferensi ─────────────────────────────────────── */
 function PreferensiPanel() {
   const { t, theme, toggleTheme } = useApp();
-  const [showTutorial, setShowTutorial] = useState(true);
-  const [beginnerMode, setBeginnerMode] = useState(false);
-  const [confirmExec, setConfirmExec] = useState(true);
-  const [hideBalance, setHideBalance] = useState(false);
-
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Preferensi Trading */}
@@ -229,44 +224,6 @@ function PreferensiPanel() {
         </div>
       </Card>
 
-      {/* Preferensi Tampilan */}
-      <Card>
-        <SectionTitle>{t('pref.display.title')}</SectionTitle>
-        <div className="flex flex-col gap-4">
-          <SelectRow label={t('pref.language')} defaultValue="id">
-            <SelectItem value="id">Bahasa Indonesia</SelectItem>
-            <SelectItem value="en">English</SelectItem>
-          </SelectRow>
-          <SelectRow label={t('pref.timezone')} defaultValue="jakarta">
-            <SelectItem value="jakarta">(GMT+07:00) Jakarta</SelectItem>
-            <SelectItem value="utc">UTC</SelectItem>
-          </SelectRow>
-          <SelectRow label={t('pref.numberFormat')} defaultValue="comma">
-            <SelectItem value="comma">1,234.56</SelectItem>
-            <SelectItem value="dot">1.234,56</SelectItem>
-          </SelectRow>
-          <SelectRow label={t('pref.dateFormat')} defaultValue="dd-mmm-yyyy">
-            <SelectItem value="dd-mmm-yyyy">DD MMM YYYY</SelectItem>
-            <SelectItem value="yyyy-mm-dd">YYYY-MM-DD</SelectItem>
-          </SelectRow>
-
-          <div className="flex flex-col gap-3">
-            <ColorPickerRow label={t('pref.upColor')} color="#22c55e" />
-            <ColorPickerRow label={t('pref.downColor')} color="#ef4444" />
-          </div>
-        </div>
-      </Card>
-
-      {/* Preferensi Lainnya */}
-      <Card>
-        <SectionTitle>{t('pref.other.title')}</SectionTitle>
-        <div className="flex flex-col gap-1 divide-y divide-border/30">
-          <ToggleRow label={t('pref.showTutorial')} value={showTutorial} onChange={setShowTutorial} />
-          <ToggleRow label={t('pref.beginnerMode')} value={beginnerMode} onChange={setBeginnerMode} />
-          <ToggleRow label={t('pref.confirmExec')} value={confirmExec} onChange={setConfirmExec} />
-          <ToggleRow label={t('pref.hideBalance')} value={hideBalance} onChange={setHideBalance} />
-        </div>
-      </Card>
     </div>
   );
 }
@@ -283,24 +240,6 @@ function SelectRow({ label, defaultValue, children }: { label: string; defaultVa
           {children}
         </SelectContent>
       </Select>
-    </div>
-  );
-}
-
-function ColorPickerRow({ label, color }: { label: string; color: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm text-foreground font-medium">{label}</span>
-      <div className="w-10 h-8 rounded-lg border border-border cursor-pointer" style={{ backgroundColor: color }} />
-    </div>
-  );
-}
-
-function ToggleRow({ label, value, onChange }: { label: string; value: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <div className="flex items-center justify-between py-3">
-      <span className="text-sm text-foreground font-medium">{label}</span>
-      <Switch checked={value} onCheckedChange={onChange} className="data-[state=checked]:bg-primary" />
     </div>
   );
 }
