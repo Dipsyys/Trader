@@ -44,33 +44,7 @@ export default function Sidebar() {
             <span className="text-foreground font-bold tracking-widest text-sm whitespace-nowrap">TRADEFX</span>
           )}
         </div>
-        {!collapsed && (
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={t('toggle.sidebar')}
-            title={t('toggle.sidebar')}
-            onClick={toggleSidebar}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
-          >
-            <Monitor className="h-4 w-4" />
-          </Button>
-        )}
       </div>
-      {collapsed && (
-        <div className="flex justify-center pb-2 -mt-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={t('toggle.sidebar')}
-            title={t('toggle.sidebar')}
-            onClick={toggleSidebar}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
-          >
-            <Smartphone className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
 
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-4 px-2 flex flex-col gap-1 custom-scrollbar">
@@ -133,14 +107,16 @@ export default function Sidebar() {
 
         {/* Utility toggles */}
         <div className={`flex items-center gap-1 ${collapsed ? 'flex-col' : 'justify-between px-0.5'}`}>
-          {/* Chat / support */}
+          {/* Sidebar toggle (desktop/mobile) */}
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Chat"
+            aria-label={t('toggle.sidebar')}
+            title={t('toggle.sidebar')}
+            onClick={toggleSidebar}
             className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
           >
-            <MessageSquare className="h-4 w-4" />
+            {collapsed ? <Smartphone className="h-4 w-4" /> : <Monitor className="h-4 w-4" />}
           </Button>
 
           {/* Language + Theme toggle group */}
