@@ -7,8 +7,8 @@ import {
   Moon,
   Sun,
   Globe,
-  PanelLeftClose,
-  PanelLeftOpen,
+  Monitor,
+  Smartphone,
   MessageSquare,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,18 +29,48 @@ export default function Sidebar() {
     >
       {/* Logo Area */}
       <div
-        className={`flex items-center h-16 flex-shrink-0 overflow-hidden cursor-pointer ${
-          collapsed ? 'justify-center px-0' : 'gap-3 px-5'
+        className={`flex items-center h-16 flex-shrink-0 overflow-hidden ${
+          collapsed ? 'justify-center px-0' : 'justify-between px-5'
         }`}
-        onClick={() => setLocation('/')}
       >
-        <div className="w-8 h-8 bg-foreground flex items-center justify-center rounded text-background font-bold text-xl flex-shrink-0">
-          X
+        <div
+          className="flex items-center gap-3 cursor-pointer overflow-hidden"
+          onClick={() => setLocation('/')}
+        >
+          <div className="w-8 h-8 bg-foreground flex items-center justify-center rounded text-background font-bold text-xl flex-shrink-0">
+            X
+          </div>
+          {!collapsed && (
+            <span className="text-foreground font-bold tracking-widest text-sm whitespace-nowrap">TRADEFX</span>
+          )}
         </div>
         {!collapsed && (
-          <span className="text-foreground font-bold tracking-widest text-sm whitespace-nowrap">TRADEFX</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t('toggle.sidebar')}
+            title={t('toggle.sidebar')}
+            onClick={toggleSidebar}
+            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
+          >
+            <Monitor className="h-4 w-4" />
+          </Button>
         )}
       </div>
+      {collapsed && (
+        <div className="flex justify-center pb-2 -mt-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t('toggle.sidebar')}
+            title={t('toggle.sidebar')}
+            onClick={toggleSidebar}
+            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
+          >
+            <Smartphone className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-4 px-2 flex flex-col gap-1 custom-scrollbar">
@@ -153,21 +183,6 @@ export default function Sidebar() {
             className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
           >
             <MessageSquare className="h-4 w-4" />
-          </Button>
-
-          {/* Sidebar collapse toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={t('toggle.sidebar')}
-            title={t('toggle.sidebar')}
-            onClick={toggleSidebar}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
-          >
-            {collapsed
-              ? <PanelLeftOpen className="h-4 w-4" />
-              : <PanelLeftClose className="h-4 w-4" />
-            }
           </Button>
         </div>
       </div>
