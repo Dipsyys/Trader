@@ -9,10 +9,10 @@ import { Eye, EyeOff, Info, ChevronDown, ArrowUpRight, ExternalLink, Zap } from 
 import { Progress } from '@/components/ui/progress';
 
 /* ─── Shared palette ────────────────────────────────── */
-const PRIMARY = '#00d4c8';
-const GREEN = '#22c55e';
-const RED = '#ef4444';
-const MUTED = '#374151';
+const PRIMARY = '#00D9FF';
+const GREEN = '#00E676';
+const RED = '#FF5A7A';
+const MUTED = 'rgba(255,255,255,0.08)';
 
 /* ─── Static data ───────────────────────────────────── */
 
@@ -42,11 +42,11 @@ const pnlBars = [
 
 // Asset allocation
 const assets = [
-  { name: 'BTC', pct: 45.2, color: '#f97316' },
-  { name: 'ETH', pct: 20.1, color: '#8b5cf6' },
-  { name: 'SOL', pct: 15.6, color: '#06b6d4' },
-  { name: 'BNB', pct: 10.3, color: '#eab308' },
-  { name: 'Others', pct: 8.8, color: '#6b7280' },
+  { name: 'BTC', pct: 45.2, color: '#00D9FF' },
+  { name: 'ETH', pct: 20.1, color: '#2563EB' },
+  { name: 'SOL', pct: 15.6, color: '#8B5CF6' },
+  { name: 'BNB', pct: 10.3, color: '#F59E0B' },
+  { name: 'Others', pct: 8.8, color: '#64748B' },
 ];
 
 // Performance calendar — July 2024 (1=Mon, offset 0)
@@ -133,14 +133,14 @@ type StatCardProps = {
 };
 function StatCard({ label, value, change, sub, positive = true, children }: StatCardProps) {
   return (
-    <div className="flex-1 min-w-0 bg-card border border-border rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden">
+    <div className="flex-1 min-w-0 bg-card trade-card p-4 flex flex-col gap-2 relative overflow-hidden">
       <div className="flex items-center justify-between">
         <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label}</span>
       </div>
       <div className="flex items-end justify-between gap-2">
         <div>
           <div className="text-lg font-black text-foreground leading-tight">{value}</div>
-          <div className={`text-[11px] font-semibold mt-0.5 ${positive ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>{change}</div>
+          <div className={`text-[11px] font-semibold mt-0.5 ${positive ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{change}</div>
           <div className="text-[10px] text-muted-foreground mt-0.5">{sub}</div>
         </div>
         <div className="w-20 flex-shrink-0">{children}</div>
@@ -151,7 +151,7 @@ function StatCard({ label, value, change, sub, positive = true, children }: Stat
 
 /* ─── Section helpers ───────────────────────────────── */
 function SectionCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <div className={`bg-card border border-border rounded-xl p-4 ${className}`}>{children}</div>;
+  return <div className={`bg-card trade-card p-4 ${className}`}>{children}</div>;
 }
 function SectionTitle({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
@@ -183,7 +183,7 @@ function EquityCurve() {
           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Equity Curve (Compound Growth)</span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-foreground">$62,409.00</span>
-            <span className="text-sm font-bold text-[#22c55e]">+24.63% (1Y)</span>
+            <span className="text-sm font-bold text-[#00E676]">+24.63% (1Y)</span>
           </div>
         </div>
         <div className="flex gap-1">
@@ -200,12 +200,12 @@ function EquityCurve() {
               <stop offset="100%" stopColor={PRIMARY} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="m" tick={{ fontSize: 9, fill: '#6b7280' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 9, fill: '#6b7280' }} axisLine={false} tickLine={false}
+          <XAxis dataKey="m" tick={{ fontSize: 9, fill: '#92A6B9' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 9, fill: '#92A6B9' }} axisLine={false} tickLine={false}
             tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
           <Tooltip
-            contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: 8, fontSize: 11 }}
-            formatter={(v: number) => [`$${v.toLocaleString()}`, 'Balance']}
+            contentStyle={{ background: '#102030', border: '1px solid #00D9FF', borderRadius: 8, fontSize: 11, color: '#F4F7FA' }}
+            formatter={(v: number) => [`${v.toLocaleString()}`, 'Balance']}
           />
           <Area type="monotone" dataKey="v" stroke={PRIMARY} strokeWidth={2} fill="url(#eqGrad)" dot={false} />
         </AreaChart>
@@ -266,19 +266,19 @@ function PnLOverview() {
       <div className="mb-2">
         <span className="text-sm font-black text-foreground">Total PnL&nbsp;</span>
         <span className="text-base font-black text-foreground">$6,912.23</span>
-        <span className="text-xs font-bold text-[#22c55e] ml-2">+18.23%</span>
+        <span className="text-xs font-bold text-[#00E676] ml-2">+18.23%</span>
       </div>
       <ResponsiveContainer width="100%" height={110}>
         <BarChart data={pnlBars} barSize={8} margin={{ top: 0, right: 0, left: -28, bottom: 0 }}>
-          <XAxis dataKey="d" tick={{ fontSize: 8, fill: '#6b7280' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 8, fill: '#6b7280' }} axisLine={false} tickLine={false} />
-          <ReferenceLine y={0} stroke="#374151" strokeWidth={1} />
+          <XAxis dataKey="d" tick={{ fontSize: 8, fill: '#92A6B9' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 8, fill: '#92A6B9' }} axisLine={false} tickLine={false} />
+          <ReferenceLine y={0} stroke="rgba(255,255,255,0.08)" strokeWidth={1} />
           <Tooltip
-            contentStyle={{ background: '#1f2937', border: '1px solid #374151', borderRadius: 8, fontSize: 11 }}
-            formatter={(v: number) => [`$${v}`, 'PnL']}
+            contentStyle={{ background: '#102030', border: '1px solid #00D9FF', borderRadius: 8, fontSize: 11, color: '#F4F7FA' }}
+            formatter={(v: number) => [`${v}`, 'PnL']}
           />
-          <Bar dataKey="v" radius={[2, 2, 0, 0]}>
-            {pnlBars.map((d, i) => <Cell key={i} fill={d.v >= 0 ? GREEN : RED} />)}
+          <Bar dataKey="v" radius={[3, 3, 0, 0]}>
+            {pnlBars.map((d, i) => <Cell key={i} fill={d.v >= 0 ? PRIMARY : RED} />)}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -295,11 +295,11 @@ function PerformanceCalendar() {
   const totalPnl = allVals.reduce((s, v) => s + v, 0);
 
   function cellColor(val: number): string {
-    if (val > 200) return 'bg-[#22c55e]/80 text-white';
-    if (val > 100) return 'bg-[#22c55e]/50 text-[#22c55e]';
-    if (val > 0)   return 'bg-[#22c55e]/20 text-[#22c55e]';
-    if (val > -50) return 'bg-[#ef4444]/20 text-[#ef4444]';
-    return 'bg-[#ef4444]/50 text-[#ef4444]';
+    if (val > 200) return 'bg-[#00E676]/80 text-white';
+    if (val > 100) return 'bg-[#00E676]/50 text-[#00E676]';
+    if (val > 0)   return 'bg-[#00E676]/20 text-[#00E676]';
+    if (val > -50) return 'bg-[#FF5A7A]/20 text-[#FF5A7A]';
+    return 'bg-[#FF5A7A]/50 text-[#FF5A7A]';
   }
 
   return (
@@ -346,15 +346,15 @@ function PerformanceCalendar() {
       <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border/50">
         <div>
           <div className="text-[9px] text-muted-foreground font-medium">Best Day</div>
-          <div className="text-xs font-black text-[#22c55e]">+${bestDay.toFixed(2)}</div>
+          <div className="text-xs font-black text-[#00E676]">+${bestDay.toFixed(2)}</div>
         </div>
         <div>
           <div className="text-[9px] text-muted-foreground font-medium">Worst Day</div>
-          <div className="text-xs font-black text-[#ef4444]">-${Math.abs(worstDay).toFixed(2)}</div>
+          <div className="text-xs font-black text-[#FF5A7A]">-${Math.abs(worstDay).toFixed(2)}</div>
         </div>
         <div>
           <div className="text-[9px] text-muted-foreground font-medium">Total PnL</div>
-          <div className="text-xs font-black text-[#22c55e]">+${totalPnl.toLocaleString()}</div>
+          <div className="text-xs font-black text-[#00E676]">+${totalPnl.toLocaleString()}</div>
         </div>
       </div>
     </SectionCard>
@@ -385,9 +385,9 @@ function StrategyPerformance() {
             <span className="text-sm flex-shrink-0">{s.icon}</span>
             <span className="text-xs font-medium text-foreground truncate">{s.name}</span>
           </div>
-          <span className={`text-xs font-bold ${s.pos ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>{s.roi}</span>
+          <span className={`text-xs font-bold ${s.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{s.roi}</span>
           <span className="text-xs font-medium text-foreground">{s.winRate}</span>
-          <span className={`text-xs font-bold ${s.pos ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>{s.pnl}</span>
+          <span className={`text-xs font-bold ${s.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{s.pnl}</span>
         </div>
       ))}
     </SectionCard>
@@ -427,15 +427,15 @@ function RecentTrades() {
                   </div>
                 </td>
                 <td className="py-2 pr-3">
-                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${t.side === 'Long' ? 'bg-[#22c55e]/20 text-[#22c55e]' : 'bg-[#ef4444]/20 text-[#ef4444]'}`}>
+                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${t.side === 'Long' ? 'bg-[#00E676]/20 text-[#00E676]' : 'bg-[#FF5A7A]/20 text-[#FF5A7A]'}`}>
                     {t.side}
                   </span>
                 </td>
                 <td className="py-2 pr-3 text-muted-foreground">{t.size}</td>
                 <td className="py-2 pr-3 text-foreground">{t.entry}</td>
                 <td className="py-2 pr-3 text-foreground">{t.exit}</td>
-                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>{t.pnl}</td>
-                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>{t.pct}</td>
+                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pnl}</td>
+                <td className={`py-2 pr-3 font-bold ${t.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{t.pct}</td>
                 <td className="py-2 text-muted-foreground whitespace-nowrap">{t.date}</td>
               </tr>
             ))}
@@ -459,9 +459,9 @@ function RiskMetrics() {
       </div>
       <ResponsiveContainer width="100%" height={130}>
         <RadarChart data={radarData} outerRadius={48} margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
-          <PolarGrid stroke="#374151" />
-          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 8, fill: '#6b7280' }} />
-          <Radar dataKey="A" stroke={PRIMARY} fill={PRIMARY} fillOpacity={0.15} strokeWidth={1.5} />
+          <PolarGrid stroke="rgba(255,255,255,0.06)" />
+          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 8, fill: '#92A6B9' }} />
+          <Radar dataKey="A" stroke={PRIMARY} fill={PRIMARY} fillOpacity={0.18} strokeWidth={2} />
         </RadarChart>
       </ResponsiveContainer>
       <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">

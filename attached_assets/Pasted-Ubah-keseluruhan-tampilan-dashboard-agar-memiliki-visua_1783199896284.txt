@@ -1,0 +1,308 @@
+Ubah keseluruhan tampilan dashboard agar memiliki visual seperti dashboard fintech/trading premium (Bybit Institutional, Linear, TradingView Premium) dengan tema Cyber Dark + Neon Cyan.
+
+Gunakan design system berikut secara konsisten di seluruh aplikasi.
+
+========================================
+COLOR SYSTEM
+========================================
+
+Background utama
+#050B14
+
+Sidebar
+#08111C
+
+Card
+#0B1523
+
+Card Hover
+#0E1D31
+
+Header
+#07111C
+
+Border
+rgba(0,217,255,0.12)
+
+Border Hover
+#00D9FF
+
+Primary Color
+#00D9FF
+
+Primary Hover
+#3BE8FF
+
+Success
+#00E676
+
+Danger
+#FF5A7A
+
+Warning
+#FFB84D
+
+Primary Text
+#F4F7FA
+
+Secondary Text
+#92A6B9
+
+Disabled Text
+#6D8092
+
+========================================
+GLOBAL STYLE
+========================================
+
+- Gunakan background navy gelap, bukan hitam.
+- Semua card menggunakan background #0B1523.
+- Border card tipis dengan warna cyan transparan.
+- Radius card 18px.
+- Semua transisi smooth 0.25s.
+- Jangan gunakan warna hijau sebagai accent utama.
+- Cyan menjadi warna utama seluruh aplikasi.
+- Hindari warna yang terlalu ramai.
+- Gunakan spacing yang lega agar terasa premium.
+
+========================================
+CARD STYLE
+========================================
+
+Setiap card menggunakan
+
+background:
+#0B1523
+
+border:
+1px solid rgba(0,217,255,.12)
+
+border-radius:
+18px
+
+box-shadow:
+0 8px 25px rgba(0,0,0,.45),
+0 0 18px rgba(0,217,255,.04);
+
+Saat hover
+
+border-color:
+#00D9FF
+
+box-shadow:
+0 0 20px rgba(0,217,255,.18);
+
+========================================
+SIDEBAR
+========================================
+
+Sidebar menggunakan
+
+background:
+#08111C
+
+Menu aktif
+
+background:
+rgba(0,217,255,.08)
+
+border:
+1px solid rgba(0,217,255,.35)
+
+box-shadow:
+0 0 18px rgba(0,217,255,.18)
+
+Icon aktif
+
+#00D9FF
+
+Text menu aktif
+
+#F4F7FA
+
+Text menu biasa
+
+#92A6B9
+
+========================================
+HEADER
+========================================
+
+Header lebih gelap dari card.
+
+Tambahkan sedikit blur.
+
+Gunakan border bawah cyan transparan.
+
+========================================
+BUTTON
+========================================
+
+Primary Button
+
+linear-gradient(
+90deg,
+#00B8FF,
+#00F0FF
+)
+
+Text putih.
+
+Hover
+
+Glow cyan halus.
+
+========================================
+TYPOGRAPHY
+========================================
+
+Gunakan font Inter.
+
+Heading
+
+700
+
+Body
+
+500
+
+Secondary
+
+400
+
+========================================
+CHART
+========================================
+
+Semua chart menggunakan warna cyan.
+
+Line Chart
+
+#00D9FF
+
+Area Fill
+
+rgba(0,217,255,.15)
+
+Grid
+
+rgba(255,255,255,.05)
+
+Tooltip
+
+background:
+#102030
+
+border:
+1px solid #00D9FF
+
+========================================
+STATISTICS
+========================================
+
+Profit
+
+#00E676
+
+Loss
+
+#FF5A7A
+
+Warning
+
+#FFB84D
+
+========================================
+DONUT CHART
+========================================
+
+BTC
+#00D9FF
+
+ETH
+#2563EB
+
+SOL
+#8B5CF6
+
+BNB
+#F59E0B
+
+Others
+#64748B
+
+========================================
+TABLE
+========================================
+
+Header table lebih gelap.
+
+Hover row menggunakan background cyan transparan.
+
+Profit berwarna hijau.
+
+Loss berwarna merah.
+
+Gunakan border yang sangat tipis.
+
+========================================
+INPUT
+========================================
+
+Background
+
+#08111C
+
+Border
+
+rgba(0,217,255,.15)
+
+Focus
+
+border:
+#00D9FF
+
+Tambahkan glow tipis.
+
+========================================
+ANIMATION
+========================================
+
+Hover card
+
+scale(1.01)
+
+Hover button
+
+Glow cyan
+
+Hover menu
+
+Slide + Glow
+
+Transition
+
+0.25s ease
+
+========================================
+TARGET VISUAL
+========================================
+
+Dashboard harus terlihat seperti perpaduan:
+
+- Bybit Institutional
+- TradingView Premium
+- Linear.app
+- Raycast
+- Modern Fintech Dashboard
+
+Kesan yang ingin dicapai:
+- Premium
+- Clean
+- Professional
+- Futuristic
+- Minimalist
+- Neon Cyan Accent
+- Dark Luxury
+
+Jangan mengubah struktur atau layout dashboard yang sudah ada. Fokus hanya pada peningkatan visual, warna, typography, shadow, border, chart, icon, dan komponen UI agar tampil lebih modern dan konsisten dengan tema Cyber Dark + Neon Cyan.

@@ -172,12 +172,9 @@ function NavItem({
       aria-label={collapsed ? label : undefined}
       title={collapsed ? label : undefined}
       onClick={onClick}
-      className={`flex items-center rounded-md transition-colors w-full group
+      className={`nav-item flex items-center rounded-md w-full group
         ${collapsed ? 'justify-center px-0 py-2.5' : 'gap-3 px-3 py-2.5 text-left'}
-        ${isActive
-          ? 'bg-primary/10 text-primary'
-          : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-        }`}
+        ${isActive ? 'nav-active' : 'text-muted-foreground hover:text-foreground'}`}
     >
       <Icon
         className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-primary' : 'group-hover:text-foreground'}`}

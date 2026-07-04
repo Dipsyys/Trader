@@ -134,46 +134,47 @@
 }
 
 .dark {
-  --button-outline: rgba(255, 255, 255, 0.1);
-  --badge-outline: rgba(255, 255, 255, 0.05);
+  --button-outline: rgba(0, 217, 255, 0.15);
+  --badge-outline: rgba(0, 217, 255, 0.08);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
+  --elevate-1: rgba(0, 217, 255, 0.03);
+  --elevate-2: rgba(0, 217, 255, 0.06);
 
-  --background: 216 47% 6%;
-  --foreground: 210 40% 98%;
-  --border: 215 28% 17%;
-  --card: 217 45% 9%;
-  --card-foreground: 210 40% 98%;
-  --card-border: 215 28% 17%;
-  --sidebar: 218 47% 5%;
-  --sidebar-foreground: 210 40% 98%;
-  --sidebar-border: 215 28% 12%;
-  --sidebar-primary: 177 100% 41%;
-  --sidebar-primary-foreground: 222 47% 6%;
-  --sidebar-accent: 217 33% 12%;
-  --sidebar-accent-foreground: 210 40% 98%;
-  --sidebar-ring: 177 100% 41%;
-  --popover: 217 45% 9%;
-  --popover-foreground: 210 40% 98%;
-  --popover-border: 215 28% 17%;
-  --primary: 177 100% 41%;
-  --primary-foreground: 222 47% 6%;
-  --secondary: 217 33% 17%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 16% 47%;
-  --accent: 217 33% 17%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
-  --input: 215 28% 17%;
-  --ring: 177 100% 41%;
-  --chart-1: 177 100% 41%;
-  --chart-2: 142 71% 45%;
+  /* Cyber Dark + Neon Cyan --------------------------------- */
+  --background: 213 72% 6%;        /* #050B14 */
+  --foreground: 210 53% 97%;       /* #F4F7FA */
+  --border: 188 50% 20%;           /* muted cyan */
+  --card: 212 60% 9%;              /* #0B1523 */
+  --card-foreground: 210 53% 97%;
+  --card-border: 188 50% 20%;
+  --sidebar: 211 65% 7%;           /* #08111C */
+  --sidebar-foreground: 210 53% 97%;
+  --sidebar-border: 188 45% 15%;
+  --sidebar-primary: 188 100% 50%; /* #00D9FF */
+  --sidebar-primary-foreground: 213 72% 6%;
+  --sidebar-accent: 212 55% 13%;
+  --sidebar-accent-foreground: 210 53% 97%;
+  --sidebar-ring: 188 100% 50%;
+  --popover: 212 60% 9%;
+  --popover-foreground: 210 53% 97%;
+  --popover-border: 188 50% 20%;
+  --primary: 188 100% 50%;         /* #00D9FF */
+  --primary-foreground: 213 72% 6%;
+  --secondary: 212 50% 15%;
+  --secondary-foreground: 210 53% 97%;
+  --muted: 212 50% 13%;
+  --muted-foreground: 210 20% 65%; /* #92A6B9 */
+  --accent: 212 50% 13%;
+  --accent-foreground: 210 53% 97%;
+  --destructive: 347 100% 67%;     /* #FF5A7A */
+  --destructive-foreground: 210 53% 97%;
+  --input: 211 65% 7%;             /* #08111C */
+  --ring: 188 100% 50%;
+  --chart-1: 188 100% 50%;         /* #00D9FF cyan */
+  --chart-2: 151 100% 45%;         /* #00E676 green */
   --chart-3: 217 91% 60%;
-  --chart-4: 24 95% 53%;
-  --chart-5: 0 84% 60%;
+  --chart-4: 37 100% 65%;          /* #FFB84D */
+  --chart-5: 347 100% 67%;         /* #FF5A7A */
 }
 
 @layer base {
@@ -184,6 +185,37 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+}
+
+/* ── Cyber Dark card / nav utilities ─────────────────── */
+.trade-card {
+  border: 1px solid rgba(0, 217, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 217, 255, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.trade-card:hover {
+  border-color: rgba(0, 217, 255, 0.40);
+  box-shadow: 0 0 24px rgba(0, 217, 255, 0.18), 0 8px 25px rgba(0, 0, 0, 0.45);
+  transform: scale(1.005);
+}
+
+.nav-active {
+  background: rgba(0, 217, 255, 0.08) !important;
+  border: 1px solid rgba(0, 217, 255, 0.35) !important;
+  box-shadow: 0 0 18px rgba(0, 217, 255, 0.18) !important;
+  color: #00D9FF !important;
+}
+.nav-active svg {
+  color: #00D9FF !important;
+}
+
+.nav-item {
+  transition: all 0.25s ease;
+}
+.nav-item:not(.nav-active):hover {
+  background: rgba(0, 217, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.15);
 }
 
 @layer utilities {
