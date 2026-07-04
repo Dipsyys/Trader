@@ -3,10 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Pencil,
   BadgeCheck,
-  User,
-  AtSign,
   Mail,
-  Phone,
   Calendar as CalendarIcon,
   Globe,
   Clock,
@@ -28,8 +25,8 @@ import {
   Bell,
   Key,
 } from 'lucide-react';
-import { FaInstagram, FaYoutube, FaTelegram, FaXTwitter, FaDiscord } from 'react-icons/fa6';
-import { SiBinance, SiOkx } from 'react-icons/si';
+import { FaInstagram, FaTelegram, FaXTwitter, FaDiscord } from 'react-icons/fa6';
+import { SiBinance, SiOkx, SiTradingview } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
@@ -688,25 +685,29 @@ export default function Profile() {
                   </div>
                 </div>
 
-                {/* Informasi Pribadi */}
-                <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6">
-                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase flex items-center gap-2">
+                {/* Media Sosial */}
+                <div className="bg-card border border-border rounded-xl p-6">
+                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    {t('info.title')}
+                    {t('social.title')}
                   </h3>
-                  <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-                    <InfoRow icon={User} label={t('info.fullName')} value="DipsxBT" highlight />
-                    <InfoRow icon={AtSign} label={t('info.username')} value="@dipsxbt" />
-                    <InfoRow icon={Mail} label={t('info.email')} value="dipsxbt@gmail.com" />
-                    <InfoRow icon={Phone} label={t('info.phone')} value="+62 812-3456-7890" />
-                    <InfoRow icon={CalendarIcon} label={t('info.birthdate')} value={t('info.birthdate.value')} />
-                    <InfoRow icon={User} label={t('info.gender')} value={t('info.gender.value')} />
-                    <InfoRow icon={Globe} label={t('info.language')} value={t('info.language.value')} />
-                    <InfoRow icon={Clock} label={t('info.timezone')} value="(GMT+07:00) Jakarta" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <SocialLink icon={FaInstagram} platform="Instagram" handle="@alwaysdips" href="https://www.instagram.com/alwaysdips" />
+                    <SocialLink icon={FaTelegram} platform="Telegram" handle="@alwaysdips" href="https://t.me/alwaysdips" />
+                    <SocialLink icon={FaXTwitter} platform="X (Twitter)" handle="@andrewstocklan" href="https://x.com/andrewstocklan" />
                   </div>
-                  <Button className="w-full mt-2" variant="outline">
-                    {t('common.saveChanges')}
-                  </Button>
+                </div>
+
+                {/* Info Trading */}
+                <div className="bg-card border border-border rounded-xl p-6">
+                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    {t('tradingInfo.title')}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <SocialLink icon={SiTradingview} platform="TradingView" handle="tradingview.com" href="https://www.tradingview.com/" />
+                    <SocialLink icon={Globe} platform="Investing.com" handle="investing.com" href="https://www.investing.com/" />
+                  </div>
                 </div>
               </div>
 
@@ -749,20 +750,6 @@ export default function Profile() {
                     <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
                       {t('about.quote')}
                     </p>
-                  </div>
-                </div>
-
-                {/* Media Sosial */}
-                <div className="bg-card border border-border rounded-xl p-6">
-                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    {t('social.title')}
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <SocialLink icon={FaInstagram} platform="Instagram" handle="@dipsxbt" />
-                    <SocialLink icon={FaXTwitter} platform="X (Twitter)" handle="@dipsxbt" />
-                    <SocialLink icon={FaTelegram} platform="Telegram" handle="@dipsxbt_channel" />
-                    <SocialLink icon={FaYoutube} platform="YouTube" handle="DipsxBT Trading" />
                   </div>
                 </div>
 
@@ -846,9 +833,14 @@ function StatCard({ icon: Icon, label, value, valueColor = 'text-foreground' }: 
   );
 }
 
-function SocialLink({ icon: Icon, platform, handle }: { icon: any; platform: string; handle: string }) {
+function SocialLink({ icon: Icon, platform, handle, href }: { icon: any; platform: string; handle: string; href?: string }) {
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-background/50 hover:bg-muted/30 hover:border-border transition-colors group cursor-pointer">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-background/50 hover:bg-muted/30 hover:border-border transition-colors group cursor-pointer"
+    >
       <div className="flex items-center gap-3">
         <Icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
         <div className="flex flex-col">
@@ -857,7 +849,7 @@ function SocialLink({ icon: Icon, platform, handle }: { icon: any; platform: str
         </div>
       </div>
       <ExternalLink className="w-3 h-3 text-muted-foreground opacity-50 group-hover:opacity-100" />
-    </div>
+    </a>
   );
 }
 

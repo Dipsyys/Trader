@@ -82,6 +82,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     'social.title': 'Media Sosial',
 
+    'tradingInfo.title': 'Info Trading',
+
     'tradingPref.title': 'Preferensi Trading',
     'tradingPref.accountType': 'Tipe Akun',
     'tradingPref.leverage': 'Leverage Default',
@@ -225,6 +227,8 @@ const translations: Record<Language, Record<string, string>> = {
     'about.quote': '"Discipline, consistency, and continuous learning. Focused on compound trading strategy to achieve financial freedom."',
 
     'social.title': 'Social Media',
+
+    'tradingInfo.title': 'Trading Info',
 
     'tradingPref.title': 'Trading Preferences',
     'tradingPref.accountType': 'Account Type',
