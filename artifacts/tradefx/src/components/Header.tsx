@@ -1,54 +1,75 @@
-import { Bell, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useApp } from '@/context/AppContext';
-import profilePhoto from '@assets/Regal_portrait_with_ornate_uniform_1783165328394.png';
+import { Bell, Activity, Search, Eye, EyeOff, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
+
+const sparkData = [10, 14, 12, 18, 22, 28, 35, 43, 50, 58, 62].map((v, i) => ({ i, v }));
 
 export default function Header() {
-  const { t } = useApp();
+  const [balanceVisible, setBalanceVisible] = useState(true);
 
   return (
-    <header className="h-16 flex-shrink-0 flex items-center justify-between px-6 border-b border-border bg-card/50 backdrop-blur-sm z-10 sticky top-0">
+    <header className="h-14 flex-shrink-0 flex items-center justify-between px-5 border-b border-border bg-card/60 backdrop-blur-sm z-10 sticky top-0 gap-4">
 
-      {/* Breadcrumb / Title Area */}
-      <div className="flex flex-col justify-center max-w-[30%]">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <span className="text-foreground">{t('header.profile')}</span>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground">{t('header.dataDiri')}</span>
-        </div>
-        <p className="text-xs text-muted-foreground truncate mt-0.5">
-          {t('header.subtitle')}
-        </p>
+      {/* Search */}
+      <div className="flex-1 max-w-xs relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+        <input
+          type="search"
+          placeholder="Search markets, pairs, or assets..."
+          className="w-full h-8 bg-muted/50 border border-border rounded-lg pl-8 pr-3 text-[11px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-muted/80 transition-colors"
+        />
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-4 flex-shrink-0">
-        <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground rounded-full w-9 h-9">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-background"></span>
-        </Button>
+      {/* Right side */}
+      <div className="flex items-center gap-3 flex-shrink-0">
 
-        <div className="flex items-center gap-3 pl-4 border-l border-border cursor-pointer group">
-          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 text-xs font-medium border border-border group-hover:border-primary/50 transition-colors">
-            <img src={profilePhoto} alt="DipsxBT" className="w-full h-full object-cover" />
+        {/* Icon buttons */}
+        <button className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+          <Activity className="w-4 h-4" />
+        </button>
+        <button className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors relative">
+          <Bell className="w-4 h-4" />
+          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full" />
+        </button>
+
+        {/* Divider */}
+        <div className="w-px h-6 bg-border" />
+
+        {/* Total Balance */}
+        <div className="flex items-center gap-3">
+          <div className="flex flex-col items-end">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-muted-foreground font-medium">Total Balance</span>
+              <button
+                onClick={() => setBalanceVisible(v => !v)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {balanceVisible ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-black text-foreground leading-tight">
+                {balanceVisible ? '$62,409.00' : '••••••••'}
+              </span>
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-3 h-3 text-[#22c55e]" />
+                <span className="text-[10px] font-bold text-[#22c55e]">+12.45%</span>
+              </div>
+            </div>
+            <span className="text-[9px] text-muted-foreground">+$6,912.23 (30D)</span>
           </div>
-          <div className="hidden sm:flex flex-col">
-            <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">DipsxBT</span>
-            <span className="text-[10px] text-muted-foreground">Pro Trader</span>
+
+          {/* Mini sparkline */}
+          <div className="w-16 h-8">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={sparkData}>
+                <Line type="monotone" dataKey="v" stroke="#22c55e" strokeWidth={1.5} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
-          <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-foreground ml-1" />
         </div>
-      </div>
 
+      </div>
     </header>
-  );
-}
-
-function Ticker({ pair, value }: { pair: string, value: string }) {
-  return (
-    <div className="flex items-center gap-1.5 whitespace-nowrap">
-      <span className="text-muted-foreground text-xs font-medium">{pair}</span>
-      <span className="text-[#22c55e] text-xs font-semibold">{value}</span>
-    </div>
   );
 }
