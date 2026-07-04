@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Pencil,
   BadgeCheck,
-  Mail,
+
   Globe,
   Clock,
   Trophy,
@@ -15,13 +15,13 @@ import {
   Eye,
   EyeOff,
   Shield,
-  MessageSquare,
+
   Moon,
   Sun,
   Bell,
   Key,
 } from 'lucide-react';
-import { FaInstagram, FaTelegram, FaXTwitter, FaDiscord } from 'react-icons/fa6';
+import { FaInstagram, FaTelegram, FaXTwitter } from 'react-icons/fa6';
 import { SiTradingview } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -468,10 +468,6 @@ function NotifikasiPanel() {
         <SectionTitle>{t('notif.channels.title')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
           <NotifChannelRow icon={Bell} label="In-App" sublabel="" activeLabel={t('common.active')} active />
-          <NotifChannelRow icon={Mail} label="Email" sublabel="dipsxbt@gmail.com" activeLabel={t('common.active')} active />
-          <NotifChannelRow icon={MessageSquare} label="SMS" sublabel="+62 812-3456-7890" activeLabel={t('common.active')} active />
-          <NotifChannelRow icon={FaTelegram} label="Telegram" sublabel="@dipsxbt_channel" activeLabel={t('common.active')} active />
-          <NotifChannelRow icon={FaDiscord} label="Discord" sublabel="DipsxBT#1234" activeLabel={t('common.active')} active />
         </div>
       </Card>
 
@@ -487,16 +483,6 @@ function NotifikasiPanel() {
           <NotifPrefRow label={t('notif.updateSistem')} value={prefs.updateSistem} onChange={() => toggle('updateSistem')} />
           <NotifPrefRow label={t('notif.laporanHarian')} value={prefs.laporanHarian} onChange={() => toggle('laporanHarian')} />
           <NotifPrefRow label={t('notif.newsletter')} value={prefs.newsletter} onChange={() => toggle('newsletter')} />
-        </div>
-      </Card>
-
-      {/* Quiet Hours */}
-      <Card>
-        <SectionTitle>{t('notif.quietHours.title')}</SectionTitle>
-        <p className="text-xs text-muted-foreground mb-4">{t('notif.quietHours.desc')}</p>
-        <div className="grid grid-cols-2 gap-6">
-          <TimeField label={t('notif.quietHours.start')} defaultValue="22:00" />
-          <TimeField label={t('notif.quietHours.end')} defaultValue="07:00" />
         </div>
       </Card>
 
