@@ -3,12 +3,7 @@ import {
   Briefcase, 
   TrendingUp, 
   BookOpen, 
-  BarChart2, 
-  Lightbulb, 
-  FlaskConical, 
-  Bell, 
   Calendar, 
-  FileText, 
   Settings,
   Moon,
   MessageSquare
@@ -32,12 +27,7 @@ export default function Sidebar() {
         <NavItem icon={Briefcase} label="Portfolio" />
         <NavItem icon={TrendingUp} label="Compound" />
         <NavItem icon={BookOpen} label="Journal" />
-        <NavItem icon={BarChart2} label="Analytics" />
-        <NavItem icon={Lightbulb} label="Strategies" />
-        <NavItem icon={FlaskConical} label="Backtest" />
-        <NavItem icon={Bell} label="Alerts" />
         <NavItem icon={Calendar} label="Calendar" />
-        <NavItem icon={FileText} label="Reports" />
         <NavItem icon={Settings} label="Settings" isActive />
       </div>
 
