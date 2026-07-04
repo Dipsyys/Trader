@@ -548,6 +548,20 @@ export default function Profile() {
                     <SocialLink icon={Globe} platform="Investing.com" handle="investing.com" href="https://www.investing.com/" />
                   </div>
                 </div>
+
+                {/* Tentang Saya */}
+                <div className="bg-card border border-border rounded-xl p-6 relative">
+                  <div className="absolute left-0 top-6 bottom-6 w-1 bg-primary rounded-r" />
+                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2 pl-3">
+                    {t('about.title')}
+                  </h3>
+                  <div className="pl-3 relative">
+                    <Quote className="w-8 h-8 text-muted/30 absolute -top-2 -left-2 rotate-180" />
+                    <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
+                      {t('about.quote')}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* RIGHT COLUMN */}
@@ -575,20 +589,6 @@ export default function Profile() {
                     <StatCard icon={Target} label={t('level.winRate')} value="67.89%" />
                     <StatCard icon={PieChart} label={t('level.profitFactor')} value="2.14" />
                     <StatCard icon={DollarSign} label={t('level.totalPnl')} value="+$62,409.00" valueColor="text-[#22c55e]" />
-                  </div>
-                </div>
-
-                {/* Tentang Saya */}
-                <div className="bg-card border border-border rounded-xl p-6 relative">
-                  <div className="absolute left-0 top-6 bottom-6 w-1 bg-primary rounded-r" />
-                  <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2 pl-3">
-                    {t('about.title')}
-                  </h3>
-                  <div className="pl-3 relative">
-                    <Quote className="w-8 h-8 text-muted/30 absolute -top-2 -left-2 rotate-180" />
-                    <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
-                      {t('about.quote')}
-                    </p>
                   </div>
                 </div>
 
