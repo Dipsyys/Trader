@@ -133,33 +133,6 @@ export default function Sidebar() {
 
         {/* Utility toggles */}
         <div className={`flex items-center gap-1 ${collapsed ? 'flex-col' : 'justify-between px-0.5'}`}>
-          {/* Theme toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={theme === 'dark' ? t('toggle.theme.light') : t('toggle.theme.dark')}
-            title={theme === 'dark' ? t('toggle.theme.light') : t('toggle.theme.dark')}
-            onClick={toggleTheme}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
-          >
-            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-
-          {/* Language toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={`${t('toggle.lang')}: ${language.toUpperCase()}`}
-            title={`${t('toggle.lang')}: ${language.toUpperCase()}`}
-            onClick={toggleLanguage}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0 relative"
-          >
-            <Globe className="h-4 w-4" />
-            <span className="absolute bottom-0.5 right-0.5 text-[8px] font-bold text-primary leading-none" aria-hidden="true">
-              {language.toUpperCase()}
-            </span>
-          </Button>
-
           {/* Chat / support */}
           <Button
             variant="ghost"
@@ -169,6 +142,36 @@ export default function Sidebar() {
           >
             <MessageSquare className="h-4 w-4" />
           </Button>
+
+          {/* Language + Theme toggle group */}
+          <div className={`flex items-center ${collapsed ? 'flex-col gap-1' : 'gap-0.5'}`}>
+            {/* Language toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={`${t('toggle.lang')}: ${language.toUpperCase()}`}
+              title={`${t('toggle.lang')}: ${language.toUpperCase()}`}
+              onClick={toggleLanguage}
+              className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0 relative"
+            >
+              <Globe className="h-4 w-4" />
+              <span className="absolute bottom-0.5 right-0.5 text-[8px] font-bold text-primary leading-none" aria-hidden="true">
+                {language.toUpperCase()}
+              </span>
+            </Button>
+
+            {/* Theme toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={theme === 'dark' ? t('toggle.theme.light') : t('toggle.theme.dark')}
+              title={theme === 'dark' ? t('toggle.theme.light') : t('toggle.theme.dark')}
+              onClick={toggleTheme}
+              className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
+            >
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+          </div>
         </div>
       </div>
     </aside>
