@@ -23,16 +23,10 @@ import {
   MessageSquare,
   MapPin,
   ChevronRight,
-  Zap,
-  SunMoon,
-  Sun,
   Moon,
+  Sun,
   Bell,
-  BellOff,
   Key,
-  Link,
-  Settings2,
-  TrendingUp,
 } from 'lucide-react';
 import { FaInstagram, FaYoutube, FaTelegram, FaXTwitter, FaDiscord } from 'react-icons/fa6';
 import { SiBinance, SiOkx } from 'react-icons/si';
@@ -48,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useApp } from '@/context/AppContext';
 
 /* ─────────────────────────────────────── helpers ─── */
 
@@ -72,6 +67,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 /* ── Keamanan ──────────────────────────────────────── */
 function KeamananPanel() {
+  const { t } = useApp();
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -85,8 +81,10 @@ function KeamananPanel() {
             <Shield className="w-7 h-7 text-primary" />
           </div>
           <div className="flex-1">
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-0.5">Security Score</p>
-            <p className="text-xl font-bold text-foreground">Sangat Kuat</p>
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-0.5">
+              {t('security.score.label')}
+            </p>
+            <p className="text-xl font-bold text-foreground">{t('security.score.status')}</p>
             <div className="mt-2 flex items-center gap-3">
               <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                 <div className="h-full w-[92%] bg-primary rounded-full" />
@@ -99,45 +97,74 @@ function KeamananPanel() {
 
       {/* Ubah Password */}
       <Card>
-        <SectionTitle>Ubah Password</SectionTitle>
+        <SectionTitle>{t('security.changePassword')}</SectionTitle>
         <div className="flex flex-col gap-4">
-          <PasswordField id="current-pw" label="Password Saat Ini" placeholder="Masukkan password saat ini" show={showCurrent} onToggle={() => setShowCurrent(v => !v)} />
-          <PasswordField id="new-pw" label="Password Baru" placeholder="Masukkan password baru" show={showNew} onToggle={() => setShowNew(v => !v)} />
-          <PasswordField id="confirm-pw" label="Konfirmasi Password Baru" placeholder="Konfirmasi password baru" show={showConfirm} onToggle={() => setShowConfirm(v => !v)} />
+          <PasswordField
+            id="current-pw"
+            label={t('security.currentPassword')}
+            placeholder={t('security.currentPassword.ph')}
+            show={showCurrent}
+            onToggle={() => setShowCurrent(v => !v)}
+            showLabel={t('security.showPassword')}
+            hideLabel={t('security.hidePassword')}
+          />
+          <PasswordField
+            id="new-pw"
+            label={t('security.newPassword')}
+            placeholder={t('security.newPassword.ph')}
+            show={showNew}
+            onToggle={() => setShowNew(v => !v)}
+            showLabel={t('security.showPassword')}
+            hideLabel={t('security.hidePassword')}
+          />
+          <PasswordField
+            id="confirm-pw"
+            label={t('security.confirmPassword')}
+            placeholder={t('security.confirmPassword.ph')}
+            show={showConfirm}
+            onToggle={() => setShowConfirm(v => !v)}
+            showLabel={t('security.showPassword')}
+            hideLabel={t('security.hidePassword')}
+          />
           <Button className="w-full mt-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground" variant="outline">
-            Ubah Password
+            {t('security.changePassword.btn')}
           </Button>
         </div>
       </Card>
 
       {/* 2FA */}
       <Card>
-        <SectionTitle>Two-Factor Authentication (2FA)</SectionTitle>
-        <p className="text-xs text-muted-foreground mb-4">Lindungi akun Anda dengan 2FA untuk keamanan ekstra.</p>
+        <SectionTitle>{t('security.2fa.title')}</SectionTitle>
+        <p className="text-xs text-muted-foreground mb-4">{t('security.2fa.desc')}</p>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-          <TwoFARow icon={Smartphone} label="Google Authenticator" active />
-          <TwoFARow icon={MessageSquare} label="SMS Authentication" active />
-          <TwoFARow icon={Mail} label="Email Authentication" active />
+          <TwoFARow icon={Smartphone} label="Google Authenticator" activeLabel={t('common.active')} active />
+          <TwoFARow icon={MessageSquare} label="SMS Authentication" activeLabel={t('common.active')} active />
+          <TwoFARow icon={Mail} label="Email Authentication" activeLabel={t('common.active')} active />
         </div>
       </Card>
 
       {/* Login Activity */}
       <Card>
-        <SectionTitle>Login Activity</SectionTitle>
+        <SectionTitle>{t('security.loginActivity')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-          <LoginRow location="Jakarta, Indonesia" device="Windows · Chrome" time="Sedang Aktif" isActive />
-          <LoginRow location="Surabaya, Indonesia" device="iOS · Safari" time="2 jam yang lalu" />
-          <LoginRow location="Bandung, Indonesia" device="Android · Chrome" time="1 hari yang lalu" />
+          <LoginRow location="Jakarta, Indonesia" device="Windows · Chrome" time={t('security.currentlyActive')} isActive />
+          <LoginRow location="Surabaya, Indonesia" device="iOS · Safari" time={t('security.hoursAgo')} />
+          <LoginRow location="Bandung, Indonesia" device="Android · Chrome" time={t('security.dayAgo')} />
         </div>
         <button className="mt-4 flex items-center gap-2 text-primary text-xs font-semibold hover:underline">
-          Lihat Semua Aktivitas <ChevronRight className="w-3.5 h-3.5" />
+          {t('security.viewAll')} <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </Card>
     </div>
   );
 }
 
-function PasswordField({ id, label, placeholder, show, onToggle }: { id: string; label: string; placeholder: string; show: boolean; onToggle: () => void }) {
+function PasswordField({
+  id, label, placeholder, show, onToggle, showLabel, hideLabel,
+}: {
+  id: string; label: string; placeholder: string; show: boolean;
+  onToggle: () => void; showLabel: string; hideLabel: string;
+}) {
   return (
     <div className="flex flex-col gap-1.5">
       <Label htmlFor={id} className="text-xs text-muted-foreground font-medium">{label}</Label>
@@ -152,7 +179,7 @@ function PasswordField({ id, label, placeholder, show, onToggle }: { id: string;
           type="button"
           onClick={onToggle}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-          aria-label={show ? 'Sembunyikan password' : 'Tampilkan password'}
+          aria-label={show ? hideLabel : showLabel}
         >
           {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
         </button>
@@ -161,7 +188,7 @@ function PasswordField({ id, label, placeholder, show, onToggle }: { id: string;
   );
 }
 
-function TwoFARow({ icon: Icon, label, active }: { icon: any; label: string; active?: boolean }) {
+function TwoFARow({ icon: Icon, label, active, activeLabel }: { icon: any; label: string; active?: boolean; activeLabel: string }) {
   return (
     <div className="flex items-center justify-between p-3.5 hover:bg-muted/30 transition-colors">
       <div className="flex items-center gap-3">
@@ -171,7 +198,7 @@ function TwoFARow({ icon: Icon, label, active }: { icon: any; label: string; act
         <span className="text-sm font-medium text-foreground">{label}</span>
       </div>
       <div className="flex items-center gap-2">
-        {active && <span className="text-xs font-bold text-primary">Aktif</span>}
+        {active && <span className="text-xs font-bold text-primary">{activeLabel}</span>}
         <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </div>
     </div>
@@ -195,7 +222,7 @@ function LoginRow({ location, device, time, isActive }: { location: string; devi
 
 /* ── Preferensi ─────────────────────────────────────── */
 function PreferensiPanel() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { t, theme, toggleTheme } = useApp();
   const [showTutorial, setShowTutorial] = useState(true);
   const [beginnerMode, setBeginnerMode] = useState(false);
   const [confirmExec, setConfirmExec] = useState(true);
@@ -205,53 +232,53 @@ function PreferensiPanel() {
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Preferensi Trading */}
       <Card>
-        <SectionTitle>Preferensi Trading</SectionTitle>
+        <SectionTitle>{t('pref.trading.title')}</SectionTitle>
         <div className="flex flex-col gap-4">
-          <SelectRow label="Tipe Akun" defaultValue="real">
+          <SelectRow label={t('pref.accountType')} defaultValue="real">
             <SelectItem value="real">Real Account</SelectItem>
             <SelectItem value="demo">Demo Account</SelectItem>
           </SelectRow>
-          <SelectRow label="Mata Uang" defaultValue="usdt">
+          <SelectRow label={t('pref.currency')} defaultValue="usdt">
             <SelectItem value="usdt">USDT</SelectItem>
             <SelectItem value="btc">BTC</SelectItem>
             <SelectItem value="eth">ETH</SelectItem>
           </SelectRow>
-          <SelectRow label="Leverage Default" defaultValue="10x">
+          <SelectRow label={t('pref.leverage')} defaultValue="10x">
             <SelectItem value="1x">1x</SelectItem>
             <SelectItem value="5x">5x</SelectItem>
             <SelectItem value="10x">10x</SelectItem>
             <SelectItem value="20x">20x</SelectItem>
             <SelectItem value="50x">50x</SelectItem>
           </SelectRow>
-          <SelectRow label="Tampilan Harga" defaultValue="last">
+          <SelectRow label={t('pref.priceDisplay')} defaultValue="last">
             <SelectItem value="last">Last Price</SelectItem>
             <SelectItem value="mark">Mark Price</SelectItem>
             <SelectItem value="index">Index Price</SelectItem>
           </SelectRow>
-          <SelectRow label="Ukuran Chart Default" defaultValue="medium">
+          <SelectRow label={t('pref.chartSize')} defaultValue="medium">
             <SelectItem value="small">Small</SelectItem>
             <SelectItem value="medium">Medium</SelectItem>
             <SelectItem value="large">Large</SelectItem>
           </SelectRow>
-          <SelectRow label="Jumlah Bar Chart" defaultValue="200">
+          <SelectRow label={t('pref.barCount')} defaultValue="200">
             <SelectItem value="100">100</SelectItem>
             <SelectItem value="200">200</SelectItem>
             <SelectItem value="500">500</SelectItem>
           </SelectRow>
 
-          {/* Color Theme */}
+          {/* Color Theme — wired to global theme */}
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-muted-foreground font-medium">Color Theme</span>
+            <span className="text-xs text-muted-foreground font-medium">{t('pref.colorTheme')}</span>
             <div className="flex gap-3">
               <button
-                onClick={() => setTheme('dark')}
+                onClick={() => theme !== 'dark' && toggleTheme()}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${theme === 'dark' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:border-border/80'}`}
               >
                 <Moon className="w-4 h-4" />
                 Dark
               </button>
               <button
-                onClick={() => setTheme('light')}
+                onClick={() => theme !== 'light' && toggleTheme()}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${theme === 'light' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:border-border/80'}`}
               >
                 <Sun className="w-4 h-4" />
@@ -264,41 +291,40 @@ function PreferensiPanel() {
 
       {/* Preferensi Tampilan */}
       <Card>
-        <SectionTitle>Preferensi Tampilan</SectionTitle>
+        <SectionTitle>{t('pref.display.title')}</SectionTitle>
         <div className="flex flex-col gap-4">
-          <SelectRow label="Bahasa" defaultValue="id">
+          <SelectRow label={t('pref.language')} defaultValue="id">
             <SelectItem value="id">Bahasa Indonesia</SelectItem>
             <SelectItem value="en">English</SelectItem>
           </SelectRow>
-          <SelectRow label="Zona Waktu" defaultValue="jakarta">
+          <SelectRow label={t('pref.timezone')} defaultValue="jakarta">
             <SelectItem value="jakarta">(GMT+07:00) Jakarta</SelectItem>
             <SelectItem value="utc">UTC</SelectItem>
           </SelectRow>
-          <SelectRow label="Format Angka" defaultValue="comma">
+          <SelectRow label={t('pref.numberFormat')} defaultValue="comma">
             <SelectItem value="comma">1,234.56</SelectItem>
             <SelectItem value="dot">1.234,56</SelectItem>
           </SelectRow>
-          <SelectRow label="Format Tanggal" defaultValue="dd-mmm-yyyy">
+          <SelectRow label={t('pref.dateFormat')} defaultValue="dd-mmm-yyyy">
             <SelectItem value="dd-mmm-yyyy">DD MMM YYYY</SelectItem>
             <SelectItem value="yyyy-mm-dd">YYYY-MM-DD</SelectItem>
           </SelectRow>
 
-          {/* Color pickers */}
           <div className="flex flex-col gap-3">
-            <ColorPickerRow label="Warna Naik" color="#22c55e" />
-            <ColorPickerRow label="Warna Turun" color="#ef4444" />
+            <ColorPickerRow label={t('pref.upColor')} color="#22c55e" />
+            <ColorPickerRow label={t('pref.downColor')} color="#ef4444" />
           </div>
         </div>
       </Card>
 
       {/* Preferensi Lainnya */}
       <Card>
-        <SectionTitle>Preferensi Lainnya</SectionTitle>
+        <SectionTitle>{t('pref.other.title')}</SectionTitle>
         <div className="flex flex-col gap-1 divide-y divide-border/30">
-          <ToggleRow label="Tampilkan Tutorial" value={showTutorial} onChange={setShowTutorial} />
-          <ToggleRow label="Mode Pemula" value={beginnerMode} onChange={setBeginnerMode} />
-          <ToggleRow label="Konfirmasi Sebelum Eksekusi" value={confirmExec} onChange={setConfirmExec} />
-          <ToggleRow label="Sembunyikan Saldo Kecil" value={hideBalance} onChange={setHideBalance} />
+          <ToggleRow label={t('pref.showTutorial')} value={showTutorial} onChange={setShowTutorial} />
+          <ToggleRow label={t('pref.beginnerMode')} value={beginnerMode} onChange={setBeginnerMode} />
+          <ToggleRow label={t('pref.confirmExec')} value={confirmExec} onChange={setConfirmExec} />
+          <ToggleRow label={t('pref.hideBalance')} value={hideBalance} onChange={setHideBalance} />
         </div>
       </Card>
     </div>
@@ -341,44 +367,45 @@ function ToggleRow({ label, value, onChange }: { label: string; value: boolean; 
 
 /* ── Integrasi ─────────────────────────────────────── */
 function IntegrasiPanel() {
+  const { t } = useApp();
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Exchange Terhubung */}
       <Card>
-        <SectionTitle>Exchange Terhubung</SectionTitle>
+        <SectionTitle>{t('integ.exchanges.title')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden mb-4">
-          <IntegrationRow icon={SiBinance} name="Binance" connected />
-          <IntegrationRow icon={BybitIcon} name="Bybit" connected />
-          <IntegrationRow icon={SiOkx} name="OKX" connected />
-          <IntegrationRow icon={BitgetIcon} name="Bitget" connected />
+          <IntegrationRow icon={SiBinance} name="Binance" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={BybitIcon} name="Bybit" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={SiOkx} name="OKX" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={BitgetIcon} name="Bitget" connectedLabel={t('common.connected')} connected />
         </div>
         <Button variant="outline" className="w-full border-border text-foreground hover:border-primary hover:text-primary text-sm">
-          Kelola Exchange
+          {t('integ.exchanges.manage')}
         </Button>
       </Card>
 
       {/* Platform & Tools */}
       <Card>
-        <SectionTitle>Platform & Tools</SectionTitle>
+        <SectionTitle>{t('integ.platforms.title')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden mb-4">
-          <IntegrationRow icon={TvIcon} name="TradingView" connected />
-          <IntegrationRow icon={FaDiscord} name="Discord" connected />
-          <IntegrationRow icon={FaTelegram} name="Telegram" connected />
-          <IntegrationRow icon={CalendarIcon} name="Google Calendar" connected />
-          <IntegrationRow icon={NotionIcon} name="Notion" connected />
+          <IntegrationRow icon={TvIcon} name="TradingView" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={FaDiscord} name="Discord" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={FaTelegram} name="Telegram" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={CalendarIcon} name="Google Calendar" connectedLabel={t('common.connected')} connected />
+          <IntegrationRow icon={NotionIcon} name="Notion" connectedLabel={t('common.connected')} connected />
         </div>
         <Button variant="outline" className="w-full border-border text-foreground hover:border-primary hover:text-primary text-sm">
-          Kelola Integrasi
+          {t('integ.platforms.manage')}
         </Button>
       </Card>
 
       {/* API Management */}
       <Card>
-        <SectionTitle>API Management</SectionTitle>
-        <p className="text-xs text-muted-foreground mb-4">Kelola API key untuk integrasi dengan platform pihak ketiga.</p>
+        <SectionTitle>{t('integ.api.title')}</SectionTitle>
+        <p className="text-xs text-muted-foreground mb-4">{t('integ.api.desc')}</p>
         <Button variant="outline" className="w-full border-border text-foreground hover:border-primary hover:text-primary text-sm flex items-center gap-2">
           <Key className="w-4 h-4" />
-          Kelola API Key
+          {t('integ.api.btn')}
         </Button>
       </Card>
     </div>
@@ -417,7 +444,9 @@ function BitgetIcon({ className }: { className?: string }) {
   );
 }
 
-function IntegrationRow({ icon: Icon, name, connected }: { icon: any; name: string; connected?: boolean }) {
+function IntegrationRow({ icon: Icon, name, connected, connectedLabel }: {
+  icon: any; name: string; connected?: boolean; connectedLabel: string;
+}) {
   return (
     <div className="flex items-center justify-between p-3.5 hover:bg-muted/30 transition-colors">
       <div className="flex items-center gap-3">
@@ -426,20 +455,19 @@ function IntegrationRow({ icon: Icon, name, connected }: { icon: any; name: stri
         </div>
         <span className="text-sm font-medium text-foreground">{name}</span>
       </div>
-      <div className="flex items-center gap-2">
-        {connected && (
-          <>
-            <span className="text-xs font-semibold text-primary">Terhubung</span>
-            <span className="w-2 h-2 rounded-full bg-primary" />
-          </>
-        )}
-      </div>
+      {connected && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-primary">{connectedLabel}</span>
+          <span className="w-2 h-2 rounded-full bg-primary" />
+        </div>
+      )}
     </div>
   );
 }
 
 /* ── Notifikasi ─────────────────────────────────────── */
 function NotifikasiPanel() {
+  const { t } = useApp();
   const [prefs, setPrefs] = useState({
     alertHarga: true,
     eksekusiOrder: true,
@@ -459,49 +487,51 @@ function NotifikasiPanel() {
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Channel Notifikasi */}
       <Card>
-        <SectionTitle>Channel Notifikasi</SectionTitle>
+        <SectionTitle>{t('notif.channels.title')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-          <NotifChannelRow icon={Bell} label="In-App" sublabel="" active />
-          <NotifChannelRow icon={Mail} label="Email" sublabel="dipsxbt@gmail.com" active />
-          <NotifChannelRow icon={MessageSquare} label="SMS" sublabel="+62 812-3456-7890" active />
-          <NotifChannelRow icon={FaTelegram} label="Telegram" sublabel="@dipsxbt_channel" active />
-          <NotifChannelRow icon={FaDiscord} label="Discord" sublabel="DipsxBT#1234" active />
+          <NotifChannelRow icon={Bell} label="In-App" sublabel="" activeLabel={t('common.active')} active />
+          <NotifChannelRow icon={Mail} label="Email" sublabel="dipsxbt@gmail.com" activeLabel={t('common.active')} active />
+          <NotifChannelRow icon={MessageSquare} label="SMS" sublabel="+62 812-3456-7890" activeLabel={t('common.active')} active />
+          <NotifChannelRow icon={FaTelegram} label="Telegram" sublabel="@dipsxbt_channel" activeLabel={t('common.active')} active />
+          <NotifChannelRow icon={FaDiscord} label="Discord" sublabel="DipsxBT#1234" activeLabel={t('common.active')} active />
         </div>
       </Card>
 
       {/* Preferensi Notifikasi */}
       <Card>
-        <SectionTitle>Preferensi Notifikasi</SectionTitle>
+        <SectionTitle>{t('notif.prefs.title')}</SectionTitle>
         <div className="flex flex-col gap-0 divide-y divide-border/30">
-          <NotifPrefRow label="Alert Harga" value={prefs.alertHarga} onChange={() => toggle('alertHarga')} />
-          <NotifPrefRow label="Eksekusi Order" value={prefs.eksekusiOrder} onChange={() => toggle('eksekusiOrder')} />
-          <NotifPrefRow label="Take Profit / Stop Loss" value={prefs.takeProfitStop} onChange={() => toggle('takeProfitStop')} />
-          <NotifPrefRow label="Deposit Berhasil" value={prefs.depositBerhasil} onChange={() => toggle('depositBerhasil')} />
-          <NotifPrefRow label="Penarikan Berhasil" value={prefs.penarikanBerhasil} onChange={() => toggle('penarikanBerhasil')} />
-          <NotifPrefRow label="Update Sistem" value={prefs.updateSistem} onChange={() => toggle('updateSistem')} />
-          <NotifPrefRow label="Laporan Harian" value={prefs.laporanHarian} onChange={() => toggle('laporanHarian')} />
-          <NotifPrefRow label="Newsletter" value={prefs.newsletter} onChange={() => toggle('newsletter')} />
+          <NotifPrefRow label={t('notif.alertHarga')} value={prefs.alertHarga} onChange={() => toggle('alertHarga')} />
+          <NotifPrefRow label={t('notif.eksekusiOrder')} value={prefs.eksekusiOrder} onChange={() => toggle('eksekusiOrder')} />
+          <NotifPrefRow label={t('notif.takeProfitStop')} value={prefs.takeProfitStop} onChange={() => toggle('takeProfitStop')} />
+          <NotifPrefRow label={t('notif.depositBerhasil')} value={prefs.depositBerhasil} onChange={() => toggle('depositBerhasil')} />
+          <NotifPrefRow label={t('notif.penarikanBerhasil')} value={prefs.penarikanBerhasil} onChange={() => toggle('penarikanBerhasil')} />
+          <NotifPrefRow label={t('notif.updateSistem')} value={prefs.updateSistem} onChange={() => toggle('updateSistem')} />
+          <NotifPrefRow label={t('notif.laporanHarian')} value={prefs.laporanHarian} onChange={() => toggle('laporanHarian')} />
+          <NotifPrefRow label={t('notif.newsletter')} value={prefs.newsletter} onChange={() => toggle('newsletter')} />
         </div>
       </Card>
 
       {/* Quiet Hours */}
       <Card>
-        <SectionTitle>Quiet Hours</SectionTitle>
-        <p className="text-xs text-muted-foreground mb-4">Tidak menerima notifikasi di luar jam berikut.</p>
+        <SectionTitle>{t('notif.quietHours.title')}</SectionTitle>
+        <p className="text-xs text-muted-foreground mb-4">{t('notif.quietHours.desc')}</p>
         <div className="grid grid-cols-2 gap-6">
-          <TimeField label="Mulai" defaultValue="22:00" />
-          <TimeField label="Selesai" defaultValue="07:00" />
+          <TimeField label={t('notif.quietHours.start')} defaultValue="22:00" />
+          <TimeField label={t('notif.quietHours.end')} defaultValue="07:00" />
         </div>
       </Card>
 
       <Button className="w-full bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold" variant="outline">
-        Simpan Pengaturan Notifikasi
+        {t('notif.save')}
       </Button>
     </div>
   );
 }
 
-function NotifChannelRow({ icon: Icon, label, sublabel, active }: { icon: any; label: string; sublabel: string; active?: boolean }) {
+function NotifChannelRow({ icon: Icon, label, sublabel, active, activeLabel }: {
+  icon: any; label: string; sublabel: string; active?: boolean; activeLabel: string;
+}) {
   return (
     <div className="flex items-center justify-between p-3.5 hover:bg-muted/30 transition-colors">
       <div className="flex items-center gap-3">
@@ -513,7 +543,7 @@ function NotifChannelRow({ icon: Icon, label, sublabel, active }: { icon: any; l
           {sublabel && <span className="text-[11px] text-muted-foreground">{sublabel}</span>}
         </div>
       </div>
-      {active && <span className="text-xs font-bold text-primary">Aktif</span>}
+      {active && <span className="text-xs font-bold text-primary">{activeLabel}</span>}
     </div>
   );
 }
@@ -545,10 +575,20 @@ function TimeField({ label, defaultValue }: { label: string; defaultValue: strin
 
 /* ─────────────────────────────────────── main component ─── */
 
-export default function Profile() {
-  const [activeTab, setActiveTab] = useState('Data Diri');
+const TAB_KEYS = ['data-diri', 'keamanan', 'preferensi', 'integrasi', 'notifikasi'] as const;
+type TabKey = typeof TAB_KEYS[number];
 
-  const tabs = ['Data Diri', 'Keamanan', 'Preferensi', 'Integrasi', 'Notifikasi'];
+const TAB_TRANS: Record<TabKey, string> = {
+  'data-diri': 'tab.dataDiri',
+  'keamanan': 'tab.keamanan',
+  'preferensi': 'tab.preferensi',
+  'integrasi': 'tab.integrasi',
+  'notifikasi': 'tab.notifikasi',
+};
+
+export default function Profile() {
+  const { t } = useApp();
+  const [activeTab, setActiveTab] = useState<TabKey>('data-diri');
 
   return (
     <div className="flex flex-col w-full max-w-7xl mx-auto animate-in fade-in duration-500">
@@ -556,16 +596,16 @@ export default function Profile() {
       {/* Tabs Row */}
       <div className="flex items-center justify-between mb-8 border-b border-border pb-px relative">
         <div className="flex items-center gap-6 overflow-x-auto">
-          {tabs.map((tab) => (
+          {TAB_KEYS.map((key) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={key}
+              onClick={() => setActiveTab(key)}
               className={`pb-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
-                activeTab === tab ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                activeTab === key ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              {tab}
-              {activeTab === tab && (
+              {t(TAB_TRANS[key])}
+              {activeTab === key && (
                 <motion.div
                   layoutId="activeTab"
                   className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary"
@@ -578,7 +618,7 @@ export default function Profile() {
         </div>
         <Button variant="outline" className="hidden sm:flex border-primary text-primary hover:bg-primary hover:text-primary-foreground h-9 text-xs font-semibold gap-2 ml-4">
           <Pencil className="w-3.5 h-3.5" />
-          Edit Profile
+          {t('common.editProfile')}
         </Button>
       </div>
 
@@ -586,7 +626,7 @@ export default function Profile() {
       <div className="w-full relative">
         <AnimatePresence mode="wait">
 
-          {activeTab === 'Data Diri' && (
+          {activeTab === 'data-diri' && (
             <motion.div
               key="data-diri"
               initial={{ opacity: 0, y: 10 }}
@@ -620,28 +660,28 @@ export default function Profile() {
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
-                        Trader compound jangka panjang yang fokus pada konsistensi, manajemen risiko, dan pertumbuhan eksponensial.
+                        {t('profile.bio')}
                       </p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-border/50">
                     <div className="flex flex-col gap-1 border-r border-border/50 sm:border-r">
-                      <span className="text-[10px] font-semibold text-primary/80 uppercase tracking-wider">Bergabung Sejak</span>
-                      <span className="text-sm font-bold text-foreground">12 Jan 2024</span>
+                      <span className="text-[10px] font-semibold text-primary/80 uppercase tracking-wider">{t('profile.joinDate.label')}</span>
+                      <span className="text-sm font-bold text-foreground">{t('profile.joinDate.value')}</span>
                     </div>
                     <div className="flex flex-col gap-1 sm:border-r border-border/50">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Negara</span>
-                      <span className="text-sm font-medium text-foreground">🇮🇩 Indonesia</span>
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{t('profile.country.label')}</span>
+                      <span className="text-sm font-medium text-foreground">{t('profile.country.value')}</span>
                     </div>
                     <div className="flex flex-col gap-1 border-r border-border/50">
-                      <span className="text-[10px] font-semibold text-primary/80 uppercase tracking-wider">Waktu Lokal</span>
+                      <span className="text-[10px] font-semibold text-primary/80 uppercase tracking-wider">{t('profile.localTime.label')}</span>
                       <span className="text-sm font-bold text-primary">13:45 WIB</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Status Akun</span>
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{t('profile.accountStatus.label')}</span>
                       <div className="flex items-center gap-1.5">
                         <div className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse" />
-                        <span className="text-sm font-medium text-[#22c55e]">Aktif</span>
+                        <span className="text-sm font-medium text-[#22c55e]">{t('profile.accountStatus.value')}</span>
                       </div>
                     </div>
                   </div>
@@ -651,20 +691,20 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6">
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    Informasi Pribadi
+                    {t('info.title')}
                   </h3>
                   <div className="flex flex-col gap-0 divide-y divide-border/50 border border-border/50 rounded-lg overflow-hidden">
-                    <InfoRow icon={User} label="Nama Lengkap" value="DipsxBT" highlight />
-                    <InfoRow icon={AtSign} label="Username" value="@dipsxbt" />
-                    <InfoRow icon={Mail} label="Email" value="dipsxbt@gmail.com" />
-                    <InfoRow icon={Phone} label="Nomor Telepon" value="+62 812-3456-7890" />
-                    <InfoRow icon={CalendarIcon} label="Tanggal Lahir" value="14 Februari 2002" />
-                    <InfoRow icon={User} label="Jenis Kelamin" value="Laki-laki" />
-                    <InfoRow icon={Globe} label="Bahasa" value="Bahasa Indonesia" />
-                    <InfoRow icon={Clock} label="Zona Waktu" value="(GMT+07:00) Jakarta" />
+                    <InfoRow icon={User} label={t('info.fullName')} value="DipsxBT" highlight />
+                    <InfoRow icon={AtSign} label={t('info.username')} value="@dipsxbt" />
+                    <InfoRow icon={Mail} label={t('info.email')} value="dipsxbt@gmail.com" />
+                    <InfoRow icon={Phone} label={t('info.phone')} value="+62 812-3456-7890" />
+                    <InfoRow icon={CalendarIcon} label={t('info.birthdate')} value={t('info.birthdate.value')} />
+                    <InfoRow icon={User} label={t('info.gender')} value={t('info.gender.value')} />
+                    <InfoRow icon={Globe} label={t('info.language')} value={t('info.language.value')} />
+                    <InfoRow icon={Clock} label={t('info.timezone')} value="(GMT+07:00) Jakarta" />
                   </div>
                   <Button className="w-full mt-2" variant="outline">
-                    Simpan Perubahan
+                    {t('common.saveChanges')}
                   </Button>
                 </div>
               </div>
@@ -676,11 +716,11 @@ export default function Profile() {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    Level Trader
+                    {t('level.title')}
                   </h3>
                   <div className="flex items-end gap-3 mb-6">
                     <span className="text-5xl font-black text-foreground tracking-tight">Lv. 7</span>
-                    <span className="text-sm font-medium text-muted-foreground pb-1.5">Elite Trader</span>
+                    <span className="text-sm font-medium text-muted-foreground pb-1.5">{t('level.elite')}</span>
                   </div>
                   <div className="flex flex-col gap-2 mb-8">
                     <div className="flex justify-between items-center text-xs font-medium">
@@ -690,10 +730,10 @@ export default function Profile() {
                     <Progress value={62} className="h-2 bg-muted" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <StatCard icon={Trophy} label="Total Trades" value="1,248" />
-                    <StatCard icon={Target} label="Win Rate" value="67.89%" />
-                    <StatCard icon={PieChart} label="Profit Factor" value="2.14" />
-                    <StatCard icon={DollarSign} label="Total PnL" value="+$62,409.00" valueColor="text-[#22c55e]" />
+                    <StatCard icon={Trophy} label={t('level.totalTrades')} value="1,248" />
+                    <StatCard icon={Target} label={t('level.winRate')} value="67.89%" />
+                    <StatCard icon={PieChart} label={t('level.profitFactor')} value="2.14" />
+                    <StatCard icon={DollarSign} label={t('level.totalPnl')} value="+$62,409.00" valueColor="text-[#22c55e]" />
                   </div>
                 </div>
 
@@ -701,12 +741,12 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-xl p-6 relative">
                   <div className="absolute left-0 top-6 bottom-6 w-1 bg-primary rounded-r" />
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-4 flex items-center gap-2 pl-3">
-                    Tentang Saya
+                    {t('about.title')}
                   </h3>
                   <div className="pl-3 relative">
                     <Quote className="w-8 h-8 text-muted/30 absolute -top-2 -left-2 rotate-180" />
                     <p className="text-sm text-foreground/90 leading-relaxed relative z-10 italic">
-                      "Disiplin, konsisten, dan selalu belajar. Fokus pada strategi compound trading untuk mencapai kebebasan finansial."
+                      {t('about.quote')}
                     </p>
                   </div>
                 </div>
@@ -715,7 +755,7 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    Media Sosial
+                    {t('social.title')}
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <SocialLink icon={FaInstagram} platform="Instagram" handle="@dipsxbt" />
@@ -729,38 +769,38 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h3 className="text-xs font-bold text-primary tracking-widest uppercase mb-5 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    Preferensi Trading
+                    {t('tradingPref.title')}
                   </h3>
                   <div className="flex flex-col gap-3">
-                    <PreferenceRow label="Tipe Akun" value="Real Account" />
-                    <PreferenceRow label="Leverage Default" value="10x" />
-                    <PreferenceRow label="Mata Uang" value="USDT" />
-                    <PreferenceRow label="Notifikasi Trading" value="Aktif" hasToggle defaultToggle />
+                    <PreferenceRow label={t('tradingPref.accountType')} value="Real Account" />
+                    <PreferenceRow label={t('tradingPref.leverage')} value="10x" />
+                    <PreferenceRow label={t('tradingPref.currency')} value="USDT" />
+                    <PreferenceRow label={t('tradingPref.notifications')} value={t('common.active')} hasToggle defaultToggle />
                   </div>
                 </div>
               </div>
             </motion.div>
           )}
 
-          {activeTab === 'Keamanan' && (
+          {activeTab === 'keamanan' && (
             <motion.div key="keamanan" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
               <KeamananPanel />
             </motion.div>
           )}
 
-          {activeTab === 'Preferensi' && (
+          {activeTab === 'preferensi' && (
             <motion.div key="preferensi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
               <PreferensiPanel />
             </motion.div>
           )}
 
-          {activeTab === 'Integrasi' && (
+          {activeTab === 'integrasi' && (
             <motion.div key="integrasi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
               <IntegrasiPanel />
             </motion.div>
           )}
 
-          {activeTab === 'Notifikasi' && (
+          {activeTab === 'notifikasi' && (
             <motion.div key="notifikasi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
               <NotifikasiPanel />
             </motion.div>
@@ -820,7 +860,9 @@ function SocialLink({ icon: Icon, platform, handle }: { icon: any; platform: str
   );
 }
 
-function PreferenceRow({ label, value, hasToggle = false, defaultToggle = false }: { label: string; value: string; hasToggle?: boolean; defaultToggle?: boolean }) {
+function PreferenceRow({ label, value, hasToggle = false, defaultToggle = false }: {
+  label: string; value: string; hasToggle?: boolean; defaultToggle?: boolean;
+}) {
   const [isOn, setIsOn] = useState(defaultToggle);
   return (
     <div className="flex items-center justify-between p-3 rounded-lg bg-background/50 border border-border/30 relative pl-4">
@@ -829,7 +871,11 @@ function PreferenceRow({ label, value, hasToggle = false, defaultToggle = false 
       <div className="flex items-center gap-3">
         <span className="text-xs font-bold text-primary">{value}</span>
         {hasToggle && (
-          <Switch checked={isOn} onCheckedChange={setIsOn} className="data-[state=checked]:bg-primary" />
+          <Switch
+            checked={isOn}
+            onCheckedChange={setIsOn}
+            className="data-[state=checked]:bg-primary scale-75"
+          />
         )}
       </div>
     </div>
