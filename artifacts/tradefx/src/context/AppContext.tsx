@@ -6,6 +6,16 @@ export type AccountType = 'real' | 'demo';
 export type Currency = 'usdt' | 'btc' | 'eth';
 export type Leverage = string; // e.g. '10x', '75x', custom numeric
 
+const BALANCE_STORAGE_KEY = 'tradefx_custom_balance';
+const DEFAULT_BALANCE = 62409.00;
+
+function loadStoredBalance(): number {
+  if (typeof window === 'undefined') return DEFAULT_BALANCE;
+  const raw = window.localStorage.getItem(BALANCE_STORAGE_KEY);
+  const parsed = raw !== null ? parseFloat(raw) : NaN;
+  return Number.isFinite(parsed) ? parsed : DEFAULT_BALANCE;
+}
+
 interface AppContextValue {
   theme: Theme;
   toggleTheme: () => void;
@@ -23,6 +33,8 @@ interface AppContextValue {
   setLeverage: (v: Leverage) => void;
   tradingNotifications: boolean;
   setTradingNotifications: (v: boolean) => void;
+  balance: number;
+  setBalance: (v: number) => void;
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -339,6 +351,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [currency, setCurrency] = useState<Currency>('usdt');
   const [leverage, setLeverage] = useState<Leverage>('10x');
   const [tradingNotifications, setTradingNotifications] = useState(true);
+  const [balance, setBalanceState] = useState<number>(loadStoredBalance);
+
+  const setBalance = (v: number) => {
+    setBalanceState(v);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(BALANCE_STORAGE_KEY, String(v));
+    }
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -365,6 +385,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       currency, setCurrency,
       leverage, setLeverage,
       tradingNotifications, setTradingNotifications,
+      balance, setBalance,
     }}>
       {children}
     </AppContext.Provider>

@@ -161,16 +161,48 @@ function PasswordField({
 
 /* ── Preferensi ─────────────────────────────────────── */
 function PreferensiPanel() {
-  const { t, theme, toggleTheme, accountType, setAccountType, currency, setCurrency, leverage, setLeverage } = useApp();
+  const { t, theme, toggleTheme, accountType, setAccountType, currency, setCurrency, leverage, setLeverage, balance, setBalance } = useApp();
   const [priceDisplay, setPriceDisplay] = useState('last');
   const [chartSize, setChartSize] = useState('medium');
   const [barCount, setBarCount] = useState('200');
+  const [balanceDraft, setBalanceDraft] = useState(String(balance));
+
+  useEffect(() => { setBalanceDraft(String(balance)); }, [balance]);
+
+  function applyBalance() {
+    const parsed = parseFloat(balanceDraft);
+    if (Number.isFinite(parsed)) setBalance(parsed);
+  }
+
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Preferensi Trading */}
       <Card>
         <SectionTitle>{t('pref.trading.title')}</SectionTitle>
         <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-foreground font-medium min-w-[140px]">Custom Balance</span>
+            <div className="flex flex-1 items-center gap-2">
+              <div className="relative flex-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold pointer-events-none">$</span>
+                <Input
+                  type="number"
+                  inputMode="decimal"
+                  value={balanceDraft}
+                  onChange={e => setBalanceDraft(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') applyBalance(); }}
+                  onBlur={applyBalance}
+                  className="pl-6 bg-background/50 border-border text-foreground text-sm h-9"
+                />
+              </div>
+              <button
+                onClick={applyBalance}
+                className="px-3 py-2 rounded-lg bg-primary/10 border border-primary/50 text-primary text-xs font-bold hover:bg-primary/20 transition-colors whitespace-nowrap"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
           <SelectRow label={t('pref.accountType')} value={accountType} onValueChange={v => setAccountType(v as any)}>
             <SelectItem value="real">Real Account</SelectItem>
             <SelectItem value="demo">Demo Account</SelectItem>

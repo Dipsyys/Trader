@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useApp } from '@/context/AppContext';
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   PieChart, Pie, Cell, RadarChart, Radar, PolarGrid,
@@ -9,16 +10,6 @@ import {
   Eye, EyeOff, Info, ChevronDown, ExternalLink,
   Zap, Search, Bell, X, Star, Pencil, Check,
 } from 'lucide-react';
-
-const BALANCE_STORAGE_KEY = 'tradefx_custom_balance';
-const DEFAULT_BALANCE = 62409.00;
-
-function loadStoredBalance(): number {
-  if (typeof window === 'undefined') return DEFAULT_BALANCE;
-  const raw = window.localStorage.getItem(BALANCE_STORAGE_KEY);
-  const parsed = raw !== null ? parseFloat(raw) : NaN;
-  return Number.isFinite(parsed) ? parsed : DEFAULT_BALANCE;
-}
 
 function formatBalance(v: number): string {
   return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -223,7 +214,7 @@ function SectionTitle({ children, action }: { children:React.ReactNode; action?:
 }
 
 /* ─── Equity Curve ──────────────────────────────────── */
-function EquityCurve() {
+function EquityCurve({ balance }: { balance: number }) {
   const [period, setPeriod] = useState('1Y');
   const periods = ['1W','1M','3M','6M','1Y','ALL'];
   return (
@@ -232,7 +223,7 @@ function EquityCurve() {
         <div>
           <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Equity Curve (Compound Growth)</p>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-[22px] font-black text-foreground">$62,409.00</span>
+            <span className="text-[22px] font-black text-foreground">${formatBalance(balance)}</span>
             <span className="text-sm font-bold text-[#00E676]">+24.63% (1Y)</span>
           </div>
         </div>
@@ -378,7 +369,7 @@ function SvgDonut({ data, size=110, inner=36, outer=52 }: {
 }
 
 /* ─── Asset Allocation ──────────────────────────────── */
-function AssetAllocation() {
+function AssetAllocation({ balance }: { balance: number }) {
   return (
     <Card className="p-4">
       <SectionTitle>Asset Allocation</SectionTitle>
@@ -388,7 +379,7 @@ function AssetAllocation() {
           <SvgDonut data={assets} size={110} inner={36} outer={52} />
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
             <span className="text-[7px] text-muted-foreground leading-none">Total</span>
-            <span className="text-[10px] font-black text-foreground leading-tight">$62,409</span>
+            <span className="text-[10px] font-black text-foreground leading-tight">${Math.round(balance).toLocaleString('en-US')}</span>
           </div>
         </div>
         {/* Legend */}
@@ -609,18 +600,11 @@ export default function Dashboard() {
   const [closed, setClosed] = useState<Set<number>>(new Set());
   const close = (i:number) => setClosed(s=>new Set([...s,i]));
 
-  const [balance, setBalance] = useState<number>(loadStoredBalance);
-
-  function updateBalance(v: number) {
-    setBalance(v);
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(BALANCE_STORAGE_KEY, String(v));
-    }
-  }
+  const { balance, setBalance } = useApp();
 
   const cards = [
     { label:'Total Balance', value:balVis?`$${formatBalance(balance)}`:'••••••••', change:'+12.45%', sub:'+$6,912.23 (30D)', pos:true, star:true,
-      editable:true, onEditSave:updateBalance,
+      editable:true, onEditSave:setBalance,
       chart:<Spark data={balanceSpark} color={PRIMARY} /> },
     { label:'Total PnL', value:balVis?'$6,912.23':'••••••', change:'+18.23%', sub:'vs last 30 days', pos:true, star:true,
       chart:<Spark data={pnlSpark} color={GREEN} /> },
@@ -650,13 +634,13 @@ export default function Dashboard() {
 
       {/* ── Equity (3fr) | Calendar (2fr) ── */}
       <div className="grid gap-3" style={{ gridTemplateColumns:'3fr 2fr' }}>
-        <EquityCurve />
+        <EquityCurve balance={balance} />
         <PerformanceCalendar />
       </div>
 
       {/* ── Asset | PnL | Strategy ── */}
       <div className="grid grid-cols-3 gap-3">
-        <AssetAllocation />
+        <AssetAllocation balance={balance} />
         <PnLOverview />
         <StrategyPerformance />
       </div>
