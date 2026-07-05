@@ -1,0 +1,290 @@
+Saya ingin Anda mengubah tampilan dashboard project ini agar semirip mungkin dengan referensi dashboard trading premium yang saya lampirkan.
+
+PENTING:
+- Jangan mengubah routing.
+- Jangan mengubah struktur React.
+- Jangan mengubah logic.
+- Jangan mengubah database.
+- Jangan mengubah API.
+- Jangan mengubah nama komponen.
+- Jangan menghapus fitur yang sudah ada.
+- Fokus HANYA pada visual/UI.
+
+Target visual harus sangat mirip dengan dashboard referensi.
+
+====================================================
+DESIGN STYLE
+====================================================
+
+Tema:
+Cyber Dark + Neon Cyan
+
+Inspirasi:
+
+- Bybit Institutional
+- TradingView Premium
+- Linear
+- Raycast
+- Modern Fintech Dashboard
+
+Dashboard harus terlihat:
+
+- Premium
+- Professional
+- Clean
+- Futuristic
+- Enterprise
+- Modern
+
+====================================================
+COLOR SYSTEM
+====================================================
+
+Background:
+#050B14
+
+Sidebar:
+#08111C
+
+Header:
+#07111C
+
+Card:
+#0B1523
+
+Card Hover:
+#0E1D31
+
+Primary:
+#00D9FF
+
+Primary Hover:
+#3BE8FF
+
+Border:
+rgba(0,217,255,.12)
+
+Text:
+#F4F7FA
+
+Secondary Text:
+#92A6B9
+
+Success:
+#00E676
+
+Danger:
+#FF5A7A
+
+Warning:
+#FFB84D
+
+====================================================
+CARD
+====================================================
+
+Semua card harus memiliki:
+
+- Border radius 18px
+- Border cyan transparan
+- Shadow premium
+- Hover glow cyan
+- Hover naik sedikit
+- Padding lebih lega
+- Spacing antar card konsisten
+
+Card tidak boleh terlihat flat.
+
+====================================================
+HEADER
+====================================================
+
+Header harus:
+
+- Lebih gelap
+- Sedikit blur
+- Border bawah cyan transparan
+- Sticky
+- Premium
+
+====================================================
+SIDEBAR
+====================================================
+
+Sidebar harus sama seperti referensi.
+
+Menu aktif:
+
+- Glow cyan
+- Border cyan
+- Background cyan transparan
+
+Icon aktif:
+
+#00D9FF
+
+Hover menu:
+
+Smooth animation
+
+====================================================
+TYPOGRAPHY
+====================================================
+
+Gunakan font Inter.
+
+Heading:
+700
+
+Subheading:
+600
+
+Body:
+500
+
+Secondary:
+400
+
+Spacing typography lebih lega.
+
+====================================================
+CHART
+====================================================
+
+Semua chart menggunakan cyan.
+
+Equity Curve:
+
+- Line cyan
+- Area gradient cyan
+- Tooltip premium
+- Grid tipis
+
+PnL Overview:
+
+- Rounded bars
+- Glow cyan
+- Tooltip premium
+
+====================================================
+TABLE
+====================================================
+
+Table harus terlihat modern.
+
+- Header lebih gelap
+- Hover row
+- Rounded row
+- Border tipis
+- Profit hijau
+- Loss merah
+
+====================================================
+CALENDAR
+====================================================
+
+Calendar harus sama seperti referensi.
+
+- Cell rounded
+- Hover glow
+- Profit hijau
+- Loss merah
+- Spacing lebih lega
+
+====================================================
+AI INSIGHT
+====================================================
+
+Card AI Insight dibuat lebih premium.
+
+- Icon besar
+- Glow cyan
+- Gradient background
+- Button cyan
+
+====================================================
+RISK METRICS
+====================================================
+
+Radar chart diperbesar.
+
+Tambahkan glow cyan.
+
+====================================================
+FUNDING PROGRESS
+====================================================
+
+Progress bar:
+
+Background:
+#132233
+
+Fill:
+
+Gradient
+
+#00B8FF
+
+ke
+
+#00F5FF
+
+Tambahkan glow.
+
+====================================================
+ICON
+====================================================
+
+Gunakan icon Lucide.
+
+Ukuran:
+
+18–20px
+
+====================================================
+ANIMATION
+====================================================
+
+Semua hover smooth.
+
+Card:
+
+translateY(-2px)
+
+Button:
+
+Glow cyan
+
+Sidebar:
+
+Glow
+
+Transition:
+
+0.25s ease
+
+====================================================
+TARGET
+====================================================
+
+Saya ingin hasil akhirnya sangat mendekati dashboard referensi.
+
+Bukan hanya warna, tetapi juga:
+
+- visual hierarchy
+- spacing
+- ukuran komponen
+- shadow
+- glow
+- typography
+- icon
+- chart
+- progress bar
+- table
+- calendar
+- hover effect
+- overall premium feeling
+
+Jika ada komponen yang belum menyerupai referensi, silakan sesuaikan sendiri hingga tampilannya semirip mungkin.
+
+Prioritaskan kemiripan visual daripada membuat desain baru. Jangan mengubah layout dasar atau fungsi aplikasi.
