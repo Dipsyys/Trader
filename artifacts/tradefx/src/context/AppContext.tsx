@@ -45,6 +45,11 @@ const translations: Record<Language, Record<string, string>> = {
     'header.profile': 'Profile',
     'header.dataDiri': 'Data Diri',
     'header.subtitle': 'Kelola informasi pribadi dan pengaturan akun Anda.',
+    'header.page.dashboard': 'Dashboard Overview',
+    'header.page.portfolio': 'Portfolio Overview',
+    'header.page.compound': 'Compound',
+    'header.page.journal': 'Journal',
+    'header.page.calendar': 'Calendar',
 
     // ── Tabs ───────────────────────────────────────────
     'tab.dataDiri': 'Data Diri',
@@ -191,6 +196,11 @@ const translations: Record<Language, Record<string, string>> = {
     'header.profile': 'Profile',
     'header.dataDiri': 'Personal Info',
     'header.subtitle': 'Manage your personal information and account settings.',
+    'header.page.dashboard': 'Dashboard Overview',
+    'header.page.portfolio': 'Portfolio Overview',
+    'header.page.compound': 'Compound',
+    'header.page.journal': 'Journal',
+    'header.page.calendar': 'Calendar',
 
     // ── Tabs ───────────────────────────────────────────
     'tab.dataDiri': 'Personal Info',

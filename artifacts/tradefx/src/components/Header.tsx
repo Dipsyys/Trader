@@ -1,24 +1,30 @@
 import { Bell, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
+import { useLocation } from 'wouter';
 import profilePhoto from '@assets/Regal_portrait_with_ornate_uniform_1783165328394.png';
+
+function getPageTitleKey(location: string): string {
+  if (location === '/dashboard' || location === '/') return 'header.page.dashboard';
+  if (location === '/profile') return 'header.page.portfolio';
+  if (location === '/compound') return 'header.page.compound';
+  if (location === '/journal') return 'header.page.journal';
+  if (location === '/calendar') return 'header.page.calendar';
+  return 'header.page.dashboard';
+}
 
 export default function Header() {
   const { t } = useApp();
+  const [location] = useLocation();
+
+  const pageTitle = t(getPageTitleKey(location));
 
   return (
     <header className="header-glass h-16 flex-shrink-0 flex items-center justify-between px-6 z-10 sticky top-0">
 
-      {/* Breadcrumb / Title Area */}
-      <div className="flex flex-col justify-center max-w-[30%]">
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <span className="text-foreground">{t('header.profile')}</span>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground">{t('header.dataDiri')}</span>
-        </div>
-        <p className="text-xs text-muted-foreground truncate mt-0.5">
-          {t('header.subtitle')}
-        </p>
+      {/* Page Title */}
+      <div className="flex flex-col justify-center max-w-[40%]">
+        <h1 className="text-base font-bold text-foreground tracking-tight">{pageTitle}</h1>
       </div>
 
       {/* Right Actions */}
@@ -41,14 +47,5 @@ export default function Header() {
       </div>
 
     </header>
-  );
-}
-
-function Ticker({ pair, value }: { pair: string, value: string }) {
-  return (
-    <div className="flex items-center gap-1.5 whitespace-nowrap">
-      <span className="text-muted-foreground text-xs font-medium">{pair}</span>
-      <span className="text-[#22c55e] text-xs font-semibold">{value}</span>
-    </div>
   );
 }
