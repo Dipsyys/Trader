@@ -7,8 +7,22 @@ import {
 } from 'recharts';
 import {
   Eye, EyeOff, Info, ChevronDown, ExternalLink,
-  Zap, Search, Bell, X, Star,
+  Zap, Search, Bell, X, Star, Pencil, Check,
 } from 'lucide-react';
+
+const BALANCE_STORAGE_KEY = 'tradefx_custom_balance';
+const DEFAULT_BALANCE = 62409.00;
+
+function loadStoredBalance(): number {
+  if (typeof window === 'undefined') return DEFAULT_BALANCE;
+  const raw = window.localStorage.getItem(BALANCE_STORAGE_KEY);
+  const parsed = raw !== null ? parseFloat(raw) : NaN;
+  return Number.isFinite(parsed) ? parsed : DEFAULT_BALANCE;
+}
+
+function formatBalance(v: number): string {
+  return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 /* ─── Palette ───────────────────────────────────────── */
 const PRIMARY  = '#00D9FF';
@@ -123,30 +137,73 @@ function CircleGauge({ pct, color, size=50 }: { pct:number; color:string; size?:
 /* ─── Stat Card ─────────────────────────────────────── */
 function StatCard({
   label, value, change, sub, positive=true, star=false, onClose, children,
+  editable=false, onEditSave,
 }: {
   label:string; value:string; change:string; sub:string;
   positive?:boolean; star?:boolean; onClose?:()=>void; children?:React.ReactNode;
+  editable?:boolean; onEditSave?:(v:number)=>void;
 }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
+
+  function startEdit() {
+    const numeric = value.replace(/[^0-9.-]/g, '');
+    setDraft(numeric || '0');
+    setEditing(true);
+  }
+
+  function save() {
+    const parsed = parseFloat(draft);
+    if (Number.isFinite(parsed) && onEditSave) onEditSave(parsed);
+    setEditing(false);
+  }
+
   return (
     <div className="flex-1 min-w-0 bg-card trade-card px-4 py-3 flex flex-col gap-2 relative overflow-hidden group">
       <div className="flex items-center justify-between">
         <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-none">{label}</span>
-        {star
-          ? <Star className="w-3 h-3 text-muted-foreground/50 group-hover:text-primary/70 transition-colors" />
-          : onClose && (
-            <button onClick={onClose} className="text-muted-foreground/50 hover:text-foreground transition-colors">
-              <X className="w-3 h-3" />
+        <div className="flex items-center gap-1.5">
+          {editable && !editing && (
+            <button onClick={startEdit} title="Edit balance"
+              className="text-muted-foreground/50 hover:text-primary transition-colors">
+              <Pencil className="w-3 h-3" />
             </button>
-          )
-        }
+          )}
+          {star
+            ? <Star className="w-3 h-3 text-muted-foreground/50 group-hover:text-primary/70 transition-colors" />
+            : onClose && (
+              <button onClick={onClose} className="text-muted-foreground/50 hover:text-foreground transition-colors">
+                <X className="w-3 h-3" />
+              </button>
+            )
+          }
+        </div>
       </div>
       <div className="flex items-end justify-between gap-2">
-        <div className="min-w-0">
-          <div className="text-[17px] font-black text-foreground leading-tight tracking-tight">{value}</div>
+        <div className="min-w-0 flex-1">
+          {editing ? (
+            <div className="flex items-center gap-1">
+              <span className="text-[15px] font-black text-foreground">$</span>
+              <input
+                autoFocus
+                type="number"
+                inputMode="decimal"
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') save(); if (e.key === 'Escape') setEditing(false); }}
+                className="w-full min-w-0 bg-transparent border-b border-primary/50 text-[15px] font-black text-foreground outline-none focus:border-primary"
+              />
+              <button onClick={save} className="text-[#00E676] hover:text-[#00E676]/80 flex-shrink-0">
+                <Check className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <div className="text-[17px] font-black text-foreground leading-tight tracking-tight">{value}</div>
+          )}
           <div className={`text-[10px] font-semibold mt-0.5 ${positive ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{change}</div>
           <div className="text-[9px] text-muted-foreground mt-0.5">{sub}</div>
         </div>
-        <div className="w-[70px] flex-shrink-0">{children}</div>
+        {!editing && <div className="w-[70px] flex-shrink-0">{children}</div>}
       </div>
     </div>
   );
@@ -552,8 +609,18 @@ export default function Dashboard() {
   const [closed, setClosed] = useState<Set<number>>(new Set());
   const close = (i:number) => setClosed(s=>new Set([...s,i]));
 
+  const [balance, setBalance] = useState<number>(loadStoredBalance);
+
+  function updateBalance(v: number) {
+    setBalance(v);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(BALANCE_STORAGE_KEY, String(v));
+    }
+  }
+
   const cards = [
-    { label:'Total Balance', value:balVis?'$62,409.00':'••••••••', change:'+12.45%', sub:'+$6,912.23 (30D)', pos:true, star:true,
+    { label:'Total Balance', value:balVis?`$${formatBalance(balance)}`:'••••••••', change:'+12.45%', sub:'+$6,912.23 (30D)', pos:true, star:true,
+      editable:true, onEditSave:updateBalance,
       chart:<Spark data={balanceSpark} color={PRIMARY} /> },
     { label:'Total PnL', value:balVis?'$6,912.23':'••••••', change:'+18.23%', sub:'vs last 30 days', pos:true, star:true,
       chart:<Spark data={pnlSpark} color={GREEN} /> },
@@ -574,7 +641,8 @@ export default function Dashboard() {
       <div className="flex gap-2.5">
         {cards.map((c,i) => closed.has(i) ? null : (
           <StatCard key={i} label={c.label} value={c.value} change={c.change}
-            sub={c.sub} positive={c.pos} star={c.star} onClose={!c.star ? ()=>close(i) : undefined}>
+            sub={c.sub} positive={c.pos} star={c.star} onClose={!c.star ? ()=>close(i) : undefined}
+            editable={(c as any).editable} onEditSave={(c as any).onEditSave}>
             {c.chart}
           </StatCard>
         ))}
