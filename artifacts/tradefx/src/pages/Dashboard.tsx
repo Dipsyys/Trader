@@ -15,6 +15,21 @@ function formatBalance(v: number): string {
   return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+/* All dashboard totals derive from the single "balance" preference via this
+   reference value: every hardcoded dollar figure below was authored against
+   a $62,409.00 balance, so we scale everything by (balance / BASE_BALANCE). */
+const BASE_BALANCE = 62409.00;
+
+function scaleBy(base: number, ratio: number): number {
+  return base * ratio;
+}
+
+function formatMoney(v: number, signed = false): string {
+  const sign = signed ? (v >= 0 ? '+' : '-') : (v < 0 ? '-' : '');
+  const abs = Math.abs(v);
+  return `${sign}$${abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 /* ─── Palette ───────────────────────────────────────── */
 const PRIMARY  = '#00D9FF';
 const GREEN    = '#00E676';
@@ -69,10 +84,10 @@ const dayPnl: Record<number,number> = {
 };
 
 const strategies = [
-  { color:PRIMARY,   name:'Breakout Hunter', roi:'+28.45%', wr:'71.2%', pnl:'$2,845.12', pos:true  },
-  { color:GREEN,     name:'Trend Following', roi:'+18.32%', wr:'66.7%', pnl:'$1,832.54', pos:true  },
-  { color:WARN,      name:'Scalping Pro',    roi:'+12.65%', wr:'61.3%', pnl:'$1,265.21', pos:true  },
-  { color:RED,       name:'Mean Reversion',  roi:'-2.14%',  wr:'48.1%', pnl:'-$214.32', pos:false },
+  { color:PRIMARY,   name:'Breakout Hunter', roi:'+28.45%', wr:'71.2%', pnlBase:2845.12,  pos:true  },
+  { color:GREEN,     name:'Trend Following', roi:'+18.32%', wr:'66.7%', pnlBase:1832.54,  pos:true  },
+  { color:WARN,      name:'Scalping Pro',    roi:'+12.65%', wr:'61.3%', pnlBase:1265.21,  pos:true  },
+  { color:RED,       name:'Mean Reversion',  roi:'-2.14%',  wr:'48.1%', pnlBase:-214.32,  pos:false },
 ];
 
 const recentTrades = [
@@ -214,9 +229,10 @@ function SectionTitle({ children, action }: { children:React.ReactNode; action?:
 }
 
 /* ─── Equity Curve ──────────────────────────────────── */
-function EquityCurve({ balance }: { balance: number }) {
+function EquityCurve({ balance, ratio }: { balance: number; ratio: number }) {
   const [period, setPeriod] = useState('1Y');
   const periods = ['1W','1M','3M','6M','1Y','ALL'];
+  const scaledEquityData = equityData.map(d => ({ ...d, v: scaleBy(d.v, ratio) }));
   return (
     <Card className="p-4 flex flex-col" style={{ minHeight:300 }}>
       <div className="flex items-start justify-between mb-2">
@@ -242,7 +258,7 @@ function EquityCurve({ balance }: { balance: number }) {
       </div>
       <div className="flex-1" style={{ minHeight:210 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={equityData} margin={{ top:8, right:4, left:-18, bottom:0 }}>
+          <AreaChart data={scaledEquityData} margin={{ top:8, right:4, left:-18, bottom:0 }}>
             <defs>
               <linearGradient id="eqGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%"   stopColor="#00D9FF" stopOpacity={1} />
@@ -255,7 +271,7 @@ function EquityCurve({ balance }: { balance: number }) {
             <YAxis tick={{ fontSize:9, fill:'#4A6070' }} axisLine={false} tickLine={false}
               tickFormatter={v=>`${(v/1000).toFixed(0)}k`} />
             <Tooltip contentStyle={TT_STYLE}
-              formatter={(v:number) => [`$${v.toLocaleString()}`, 'Balance']} />
+              formatter={(v:number) => [formatMoney(v), 'Balance']} />
             <Area type="monotone" dataKey="v"
               stroke="#00D9FF" strokeWidth={2.5}
               fill="url(#eqGrad)" fillOpacity={1} dot={false}
@@ -268,9 +284,12 @@ function EquityCurve({ balance }: { balance: number }) {
 }
 
 /* ─── Performance Calendar ──────────────────────────── */
-function PerformanceCalendar() {
+function PerformanceCalendar({ ratio }: { ratio: number }) {
   const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const vals = Object.values(dayPnl);
+  const scaledDayPnl: Record<number, number> = Object.fromEntries(
+    Object.entries(dayPnl).map(([d, v]) => [d, scaleBy(v, ratio)])
+  );
+  const vals = Object.values(scaledDayPnl);
   const best  = Math.max(...vals);
   const worst = Math.min(...vals);
   const total = vals.reduce((s,v)=>s+v, 0);
@@ -302,7 +321,7 @@ function PerformanceCalendar() {
         <div key={ri} className="grid grid-cols-7 gap-1 mb-1">
           {row.map((day,di)=>{
             if (!day) return <div key={di}/>;
-            const val = dayPnl[day];
+            const val = scaledDayPnl[day];
             const hasVal = val !== undefined;
             return (
               <div key={di}
@@ -310,7 +329,7 @@ function PerformanceCalendar() {
               >
                 <div className="text-[8px] font-semibold">{day}</div>
                 {hasVal && (
-                  <div className="text-[7px] font-bold leading-tight">{val>0?'+':''}{val}</div>
+                  <div className="text-[7px] font-bold leading-tight">{val>0?'+':''}{Math.round(val)}</div>
                 )}
               </div>
             );
@@ -320,15 +339,15 @@ function PerformanceCalendar() {
       <div className="grid grid-cols-3 gap-2 mt-auto pt-3 border-t border-border/40">
         <div>
           <p className="text-[8px] text-muted-foreground">Best Day</p>
-          <p className="text-[11px] font-black text-[#00E676]">+${best}</p>
+          <p className="text-[11px] font-black text-[#00E676]">{formatMoney(best, true)}</p>
         </div>
         <div>
           <p className="text-[8px] text-muted-foreground">Worst Day</p>
-          <p className="text-[11px] font-black text-[#FF5A7A]">-${Math.abs(worst)}</p>
+          <p className="text-[11px] font-black text-[#FF5A7A]">{formatMoney(worst)}</p>
         </div>
         <div>
           <p className="text-[8px] text-muted-foreground">Total PnL</p>
-          <p className="text-[11px] font-black text-[#00E676]">+${total.toLocaleString()}</p>
+          <p className="text-[11px] font-black text-[#00E676]">{formatMoney(total, true)}</p>
         </div>
       </div>
     </Card>
@@ -401,7 +420,9 @@ function AssetAllocation({ balance }: { balance: number }) {
 }
 
 /* ─── PnL Overview ──────────────────────────────────── */
-function PnLOverview() {
+function PnLOverview({ ratio }: { ratio: number }) {
+  const scaledBars = pnlBars.map(d => ({ ...d, v: scaleBy(d.v, ratio) }));
+  const totalPnl = scaleBy(6912.23, ratio);
   return (
     <Card className="p-4 flex flex-col">
       <SectionTitle
@@ -414,18 +435,18 @@ function PnLOverview() {
         PnL Overview
       </SectionTitle>
       <div className="mb-2">
-        <span className="text-[12px] font-black text-foreground">Total PnL&nbsp;$6,912.23&nbsp;</span>
+        <span className="text-[12px] font-black text-foreground">Total PnL&nbsp;{formatMoney(totalPnl)}&nbsp;</span>
         <span className="text-[11px] font-bold text-[#00E676]">+18.23%</span>
       </div>
       <div className="flex-1" style={{ minHeight:130 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={pnlBars} barSize={9} margin={{ top:2, right:0, left:-30, bottom:0 }}>
+          <BarChart data={scaledBars} barSize={9} margin={{ top:2, right:0, left:-30, bottom:0 }}>
             <XAxis dataKey="d" tick={{ fontSize:7.5, fill:'#4A6070' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize:7.5, fill:'#4A6070' }} axisLine={false} tickLine={false} />
             <ReferenceLine y={0} stroke="rgba(255,255,255,0.06)" />
-            <Tooltip contentStyle={TT_STYLE} formatter={(v:number)=>[`${v}`, 'PnL']} />
+            <Tooltip contentStyle={TT_STYLE} formatter={(v:number)=>[formatMoney(v, true), 'PnL']} />
             <Bar dataKey="v" radius={[4,4,0,0]}>
-              {pnlBars.map((d,i)=>(
+              {scaledBars.map((d,i)=>(
                 <Cell key={i} fill={d.v>=0 ? PRIMARY : RED}
                   style={d.v>=0 ? { filter:'drop-shadow(0 0 4px rgba(0,217,255,0.5))' } : undefined}
                 />
@@ -439,7 +460,7 @@ function PnLOverview() {
 }
 
 /* ─── Strategy Performance ──────────────────────────── */
-function StrategyPerformance() {
+function StrategyPerformance({ ratio }: { ratio: number }) {
   return (
     <Card className="p-4">
       <SectionTitle
@@ -467,7 +488,7 @@ function StrategyPerformance() {
           </div>
           <span className={`text-[10px] font-bold ${s.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{s.roi}</span>
           <span className="text-[10px] text-foreground font-medium">{s.wr}</span>
-          <span className={`text-[10px] font-bold ${s.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{s.pnl}</span>
+          <span className={`text-[10px] font-bold ${s.pos ? 'text-[#00E676]' : 'text-[#FF5A7A]'}`}>{formatMoney(scaleBy(s.pnlBase, ratio))}</span>
         </div>
       ))}
     </Card>
@@ -601,13 +622,18 @@ export default function Dashboard() {
   const close = (i:number) => setClosed(s=>new Set([...s,i]));
 
   const { balance, setBalance } = useApp();
+  const ratio = balance / BASE_BALANCE;
+
+  const totalPnl = scaleBy(6912.23, ratio);
+  const scaledBalanceSpark = balanceSpark.map(d => ({ ...d, v: scaleBy(d.v, ratio) }));
+  const scaledPnlSpark = pnlSpark.map(d => ({ ...d, v: scaleBy(d.v, ratio) }));
 
   const cards = [
-    { label:'Total Balance', value:balVis?`$${formatBalance(balance)}`:'••••••••', change:'+12.45%', sub:'+$6,912.23 (30D)', pos:true, star:true,
+    { label:'Total Balance', value:balVis?`$${formatBalance(balance)}`:'••••••••', change:'+12.45%', sub:`+${formatMoney(totalPnl)} (30D)`, pos:true, star:true,
       editable:true, onEditSave:setBalance,
-      chart:<Spark data={balanceSpark} color={PRIMARY} /> },
-    { label:'Total PnL', value:balVis?'$6,912.23':'••••••', change:'+18.23%', sub:'vs last 30 days', pos:true, star:true,
-      chart:<Spark data={pnlSpark} color={GREEN} /> },
+      chart:<Spark data={scaledBalanceSpark} color={PRIMARY} /> },
+    { label:'Total PnL', value:balVis?formatMoney(totalPnl):'••••••', change:'+18.23%', sub:'vs last 30 days', pos:true, star:true,
+      chart:<Spark data={scaledPnlSpark} color={GREEN} /> },
     { label:'ROI (Compound)', value:'+24.63%', change:'Annualized 68.21%', sub:'vs last 30 days', pos:true,
       chart:<div className="flex justify-end"><CircleGauge pct={24.63} color={PRIMARY} /></div> },
     { label:'Win Rate', value:'67.89%', change:'+5.32%', sub:'vs last 30 days', pos:true,
@@ -634,15 +660,15 @@ export default function Dashboard() {
 
       {/* ── Equity (3fr) | Calendar (2fr) ── */}
       <div className="grid gap-3" style={{ gridTemplateColumns:'3fr 2fr' }}>
-        <EquityCurve balance={balance} />
-        <PerformanceCalendar />
+        <EquityCurve balance={balance} ratio={ratio} />
+        <PerformanceCalendar ratio={ratio} />
       </div>
 
       {/* ── Asset | PnL | Strategy ── */}
       <div className="grid grid-cols-3 gap-3">
         <AssetAllocation balance={balance} />
-        <PnLOverview />
-        <StrategyPerformance />
+        <PnLOverview ratio={ratio} />
+        <StrategyPerformance ratio={ratio} />
       </div>
 
       {/* ── Bottom ── */}
