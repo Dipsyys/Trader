@@ -7,7 +7,7 @@ import {
   Tooltip, ReferenceLine,
 } from 'recharts';
 import {
-  Eye, EyeOff, Info, ChevronDown, ExternalLink,
+  Eye, EyeOff, Info, ChevronDown, ChevronLeft, ChevronRight, ExternalLink,
   Zap, Search, Bell, X, Star, Pencil, Check,
 } from 'lucide-react';
 
@@ -68,13 +68,6 @@ const assets = [
 ];
 
 type DayVal = number | null;
-const calRows: DayVal[][] = [
-  [1,2,3,4,5,6,7],
-  [8,9,10,11,12,13,14],
-  [15,16,17,18,19,20,21],
-  [22,23,24,25,26,27,28],
-  [29,30,31,null,null,null,null],
-];
 const dayPnl: Record<number,number> = {
   1:-133, 2:-45, 3:291, 4:98, 5:98,
   8:88, 9:223, 10:-18, 11:135, 12:128,
@@ -82,6 +75,47 @@ const dayPnl: Record<number,number> = {
   22:193, 23:291, 24:-96, 25:121,
   29:215, 30:-89, 31:312,
 };
+const DATA_YEAR = 2024;
+const DATA_MONTH = 6; // July (0-indexed)
+
+/* Deterministic pseudo-random PnL generator, used so navigating to any
+   month/year still shows plausible (but stable) data. */
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function getMonthPnl(year: number, month: number): Record<number, number> {
+  if (year === DATA_YEAR && month === DATA_MONTH) return dayPnl;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const result: Record<number, number> = {};
+  for (let day = 1; day <= daysInMonth; day++) {
+    const seed = year * 10000 + month * 100 + day;
+    if (seededRandom(seed) < 0.28) continue; // ~28% of days have no trades
+    const magnitude = 20 + seededRandom(seed + 1) * 300;
+    const sign = seededRandom(seed + 2) > 0.38 ? 1 : -1;
+    result[day] = Math.round(magnitude * sign);
+  }
+  return result;
+}
+
+function buildCalRows(year: number, month: number): DayVal[][] {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7; // Mon=0
+  const cells: DayVal[] = [
+    ...Array(firstWeekday).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  while (cells.length % 7 !== 0) cells.push(null);
+  const rows: DayVal[][] = [];
+  for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
+  return rows;
+}
+
+const MONTH_NAMES = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December',
+];
 
 const strategies = [
   { color:PRIMARY,   name:'Breakout Hunter', roi:'+28.45%', wr:'71.2%', pnlBase:2845.12,  pos:true  },
@@ -286,13 +320,31 @@ function EquityCurve({ balance, ratio }: { balance: number; ratio: number }) {
 /* ─── Performance Calendar ──────────────────────────── */
 function PerformanceCalendar({ ratio }: { ratio: number }) {
   const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const [year, setYear] = useState(DATA_YEAR);
+  const [month, setMonth] = useState(DATA_MONTH);
+
+  const calRows = buildCalRows(year, month);
+  const monthPnl = getMonthPnl(year, month);
   const scaledDayPnl: Record<number, number> = Object.fromEntries(
-    Object.entries(dayPnl).map(([d, v]) => [d, scaleBy(v, ratio)])
+    Object.entries(monthPnl).map(([d, v]) => [d, scaleBy(v, ratio)])
   );
   const vals = Object.values(scaledDayPnl);
-  const best  = Math.max(...vals);
-  const worst = Math.min(...vals);
+  const best  = vals.length ? Math.max(...vals) : 0;
+  const worst = vals.length ? Math.min(...vals) : 0;
   const total = vals.reduce((s,v)=>s+v, 0);
+
+  function goPrevMonth() {
+    if (month === 0) { setMonth(11); setYear(y => y - 1); }
+    else setMonth(m => m - 1);
+  }
+  function goNextMonth() {
+    if (month === 11) { setMonth(0); setYear(y => y + 1); }
+    else setMonth(m => m + 1);
+  }
+  function goToday() {
+    setYear(DATA_YEAR);
+    setMonth(DATA_MONTH);
+  }
 
   function cellStyle(val: number | undefined) {
     if (val === undefined) return '';
@@ -306,14 +358,27 @@ function PerformanceCalendar({ ratio }: { ratio: number }) {
     <Card className="p-4 flex flex-col h-full">
       <SectionTitle
         action={
-          <button className="flex items-center gap-1 text-[9px] text-muted-foreground border border-border/60 rounded-md px-2 py-0.5 hover:border-primary/50 transition-colors">
+          <button onClick={goToday} title="Jump to current data month"
+            className="flex items-center gap-1 text-[9px] text-muted-foreground border border-border/60 rounded-md px-2 py-0.5 hover:border-primary/50 transition-colors">
             This Month <ChevronDown className="w-3 h-3" />
           </button>
         }
       >
         Performance Calendar <Info className="w-3 h-3 inline ml-1 opacity-50" />
       </SectionTitle>
-      <p className="text-[11px] font-semibold text-foreground mb-2">July 2024</p>
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11px] font-semibold text-foreground">{MONTH_NAMES[month]} {year}</p>
+        <div className="flex items-center gap-1">
+          <button onClick={goPrevMonth} title="Previous month"
+            className="w-5 h-5 flex items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+            <ChevronLeft className="w-3.5 h-3.5" />
+          </button>
+          <button onClick={goNextMonth} title="Next month"
+            className="w-5 h-5 flex items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
       <div className="grid grid-cols-7 gap-1 mb-1">
         {days.map(d=><div key={d} className="text-center text-[8px] font-bold text-muted-foreground">{d}</div>)}
       </div>
