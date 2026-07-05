@@ -570,48 +570,6 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-3 w-full animate-in fade-in duration-500">
 
-      {/* ── Header ── */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-[18px] font-black text-foreground tracking-tight">Portfolio Overview</h1>
-          <p className="text-[10px] text-muted-foreground mt-0.5">Track your performance and grow your capital with compound trading.</p>
-        </div>
-        <div className="flex items-center gap-2.5 flex-shrink-0">
-          {/* Search */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 hover:border-primary/40 transition-colors cursor-text"
-            style={{ background:'rgba(11,21,35,0.8)' }}>
-            <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-            <input type="text" placeholder="Search markets, pairs, or assets..."
-              className="bg-transparent text-[10px] text-foreground placeholder:text-muted-foreground outline-none w-44" />
-          </div>
-          {/* Icon buttons */}
-          {[Zap, Bell].map((Icon,i)=>(
-            <button key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors relative"
-              style={{ background:'rgba(11,21,35,0.8)', border:'1px solid rgba(0,217,255,0.12)' }}>
-              <Icon className="w-3.5 h-3.5" />
-              {i===1 && <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />}
-            </button>
-          ))}
-          {/* Balance badge */}
-          <div className="flex items-center gap-3 px-3.5 py-2 rounded-xl"
-            style={{ background:'rgba(11,21,35,0.9)', border:'1px solid rgba(0,217,255,0.15)', boxShadow:'0 0 20px rgba(0,217,255,0.06)' }}>
-            <div>
-              <div className="flex items-center gap-1">
-                <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-wider">Total Balance</span>
-                <button onClick={()=>setBalVis(v=>!v)} className="text-muted-foreground hover:text-primary transition-colors">
-                  {balVis ? <Eye className="w-2.5 h-2.5" /> : <EyeOff className="w-2.5 h-2.5" />}
-                </button>
-              </div>
-              <div className="text-[14px] font-black text-foreground leading-tight">{balVis?'$62,409.00':'••••••••'}</div>
-              <div className="text-[9px] font-semibold text-[#00E676]">+$6,912.23 (30D)</div>
-            </div>
-            <div style={{ width:60 }}>
-              <Spark data={balanceSpark} color={PRIMARY} h={36} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ── Stat Cards ── */}
       <div className="flex gap-2.5">
         {cards.map((c,i) => closed.has(i) ? null : (
